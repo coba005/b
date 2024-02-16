@@ -83,7 +83,7 @@
             border: none;
             padding: 4.5px 20px;
          
-            color: #FFF;
+         
         }
 
         .hidden {
