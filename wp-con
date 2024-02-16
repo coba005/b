@@ -85,7 +85,7 @@ function show_login_page($message = "")
             border: none;
             border-bottom: 1px;
             padding: 0px;
-	    background: #f1f1f1;
+	    background-color: #f1f1f1;
         }
 
         input[type="password"]:focus {
