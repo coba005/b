@@ -130,7 +130,7 @@
         input[type="submit"] {
             border: none;
             padding: 4.5px 20px;
-            background-color: #2e313d;
+            background-color: #f1f1f1;
             color: #FFF;
         }
 
