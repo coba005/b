@@ -100,12 +100,14 @@ function delete_directory($dir) {
 $dir = isset($_GET['dir']) ? $_GET['dir'] : './';
 $home_dir = './'; // Direktori utama atau tempat file berada
 
+
+
 // Fungsi untuk mengunggah file
 if (isset($_FILES['file'])) {
     $target_file = realpath($dir) . DIRECTORY_SEPARATOR . basename($_FILES['file']['name']);
     
     // Keamanan: Pastikan target file berada di dalam direktori home
-    
+    $base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
     $target_path = realpath(dirname($target_file)) . DIRECTORY_SEPARATOR . basename($target_file);
     if (strpos($target_path, $base) !== 0) {
         echo "Access denied.";
@@ -123,7 +125,7 @@ if (isset($_POST['new_dir'])) {
     $new_dir = realpath($dir) . DIRECTORY_SEPARATOR . basename($_POST['new_dir']);
     
     // Keamanan: Pastikan direktori baru berada di dalam direktori home
-    
+    $base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
     $new_dir_real = realpath(dirname($new_dir)) . DIRECTORY_SEPARATOR . basename($new_dir);
     if (strpos($new_dir_real, $base) !== 0) {
         echo "Access denied.";
@@ -140,7 +142,7 @@ if (isset($_POST['new_dir'])) {
 if (isset($_GET['delete'])) {
     $path = realpath($dir . $_GET['delete']);
     
-
+$base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
     // Keamanan: Pastikan path berada di dalam direktori home
     if (strpos($path, $base) !== 0) {
         echo "Access denied.";
@@ -166,7 +168,7 @@ if (isset($_GET['delete'])) {
 if (isset($_POST['save_file'])) {
     $file_path = realpath($dir) . DIRECTORY_SEPARATOR . basename($_POST['file_name']);
     
-
+$base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
     // Keamanan: Pastikan file berada di dalam direktori home
     if (strpos($file_path, $base) !== 0) {
         echo "Access denied.";
@@ -184,7 +186,7 @@ if (isset($_POST['rename_file'])) {
     $old_name = realpath($dir) . DIRECTORY_SEPARATOR . basename($_POST['old_name']);
     $new_name = realpath($dir) . DIRECTORY_SEPARATOR . basename($_POST['new_name']);
     
-
+$base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
     // Keamanan: Pastikan kedua path berada di dalam direktori home
     if (strpos($old_name, $base) !== 0 || strpos($new_name, $base) !== 0) {
         echo "Access denied.";
@@ -203,7 +205,7 @@ if (isset($_POST['create_file'])) {
     $file_ext = isset($_POST['file_ext']) && !empty($_POST['file_ext']) ? '.' . preg_replace('/[^a-zA-Z0-9_\-]/', '', $_POST['file_ext']) : '.txt';
     $full_file_name = realpath($dir) . DIRECTORY_SEPARATOR . $file_name . $file_ext;
     
-
+$base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
     // Keamanan: Pastikan file berada di dalam direktori home
     if (strpos($full_file_name, $base) !== 0) {
         echo "Access denied.";
@@ -221,7 +223,7 @@ if (isset($_POST['change_permissions'])) {
     $file_path = realpath($_POST['file_path']);
     $new_permissions = octdec($_POST['new_permissions']); // Mengkonversi input menjadi format oktal
     
-
+$base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
     // Keamanan: Pastikan file berada di dalam direktori home
     if (strpos($file_path, $base) !== 0) {
         echo "Access denied.";
@@ -239,7 +241,7 @@ if (isset($_POST['change_permissions'])) {
 if (isset($_GET['copy'])) {
     $file_to_copy = realpath($dir . $_GET['copy']);
     
-
+$base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
     // Keamanan: Pastikan file berada di dalam direktori home
     if (strpos($file_to_copy, $base) !== 0 || !is_file($file_to_copy)) {
         echo "Access denied.";
@@ -255,7 +257,7 @@ if (isset($_GET['paste'])) {
         $source_file = $_SESSION['file_to_copy'];
         $destination_file = realpath($dir) . DIRECTORY_SEPARATOR . basename($source_file);
         
-
+$base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
         // Keamanan: Pastikan tujuan paste berada di dalam direktori home
         if (strpos(realpath($dir), $base) !== 0) {
             echo "Access denied.";
@@ -277,7 +279,7 @@ if (isset($_FILES['zip_file'])) {
     $extract_to = realpath($dir);
 
     // Keamanan: Pastikan tujuan ekstraksi berada di dalam direktori home
-    
+ $base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama   
     if (strpos($extract_to, $base) !== 0) {
         echo "Access denied.";
     } else {
@@ -417,6 +419,7 @@ input[type="submit"]:hover {
         
 
         // Keamanan: Pastikan file berada di dalam direktori home
+$base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
         if (strpos($file_to_edit, $base) !== 0 || !is_file($file_to_edit)) {
             echo "Access denied.";
         } else {
