@@ -430,9 +430,9 @@ function downloadFile($url, $targetFile) {
 // Cek jika form di-submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (downloadFile($url, $targetFile)) {
-        echo "File adminer.php telah berhasil diunduh.";
+        echo "File adminer.php telah berhasil dipasang.";
     } else {
-        echo "Gagal mengunduh file.";
+        echo "Gagal memasang adminer.php.";
     }
 }
 ?>
