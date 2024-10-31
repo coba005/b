@@ -1,4 +1,3 @@
-<?php
 
 function find_wp_config() {
     $root_dir = $_SERVER['DOCUMENT_ROOT']; // Mengambil root direktori situs
@@ -114,4 +113,4 @@ if (!$wp_config_path) {
 
     $mysqli->close();
 }
-?>
+
