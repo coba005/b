@@ -395,7 +395,7 @@ input[type="submit"]:hover {
 
 </head>
 <body>
-   <center> <h2>FileManagerAI V5</h2> </center>
+   <center> <h2>FileManagerAI V7</h2> </center>
 
 
   <table>
