@@ -826,7 +826,7 @@ $pathParts = explode('/', $dir);
 $baseUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?');
 
 // Mulai output HTML
-echo '<h3>📁 : ';
+echo '<h3>📁 : /';
 
 // Variabel untuk menyimpan path saat ini
 $currentPath = '';
