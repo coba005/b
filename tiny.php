@@ -1,4 +1,6 @@
 <?php
+ini_set('log_errors', 0);
+
 //Default Configuration
 $CONFIG = '{"lang":"en","error_reporting":false,"show_hidden":false,"hide_Cols":false,"theme":"light"}';
 
