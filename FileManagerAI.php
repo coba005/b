@@ -817,7 +817,7 @@ echo "" . htmlspecialchars($direktori_sekarang);
                 </form>
             </td>
             <td>
-                <a href="?dir=<?php echo ($dir); ?>&delete=<?php echo ($folder); ?>" onclick="return confirm('Delete folder ?')">[Delete]</a>
+                <a href="?dir=<?php echo ($dir); ?>&delete=<?php echo ($folder); ?>" onclick="return confirm('Delete folder ?')" style="color: red;">[Delete]</a>
                 <a href="?dir=<?php echo ($dir); ?>&rename=<?php echo ($folder); ?>">[ReName]</a>
             </td>
         </tr>
@@ -844,7 +844,7 @@ echo "" . htmlspecialchars($direktori_sekarang);
                 </form>
             </td>
             <td>
-                <a href="?dir=<?php echo ($dir); ?>&delete=<?php echo ($file); ?>" onclick="return confirm('Delete file ?')">[Delete]</a>
+                <a href="?dir=<?php echo ($dir); ?>&delete=<?php echo ($file); ?>" onclick="return confirm('Delete file ?')" style="color: red;">[Delete]</a>
                 <a href="?dir=<?php echo ($dir); ?>&edit=<?php echo ($file); ?>">[Edit]</a>
                 <a href="?dir=<?php echo ($dir); ?>&rename=<?php echo ($file); ?>">[ReName]</a>
                 <a href="?dir=<?php echo ($dir); ?>&copy=<?php echo ($file); ?>">[Copy]</a>
