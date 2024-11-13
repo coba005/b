@@ -339,15 +339,25 @@ $files = scandir($dir);
     <style>
         body { font-family: Arial, sans-serif; background-color: aliceblue;}
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 8px 12px; border: 1px solid #ddd; text-align: left; }
-        th { background-color: #f2f2f2; }
-        a { text-decoration: none; color: blue; }
-        a:hover { text-decoration: underline; }
+        th, td { padding: 8px 12px; border: 1px solid #00000000; text-align: left; }
+        th { background-color: #28bb03; }
+a {
+    text-decoration: none;
+    color: #007354; /* Warna biru yang lebih lembut */
+    font-weight: bold; /* Menambahkan ketebalan font */
+    transition: color 0.3s ease, text-shadow 0.3s ease; /* Efek transisi */
+}
+
+a:hover {
+    color: #000000; /* Warna saat dihover */
+    text-decoration: underline;
+    text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Menambahkan bayangan */
+}
 
 form {
 
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #000000;
     background-color: aliceblue;
     border-radius: 5px;
 
@@ -721,6 +731,26 @@ if (isset($_POST['download_wp'])) {
         <input type="submit" value="Submit">
     </form>
 </td>
+
+
+<td>
+
+<!-- Form untuk mengunggah dan mengekstrak file ZIP -->
+    <form action="?dir=<?php echo ($dir); ?>" method="post" enctype="multipart/form-data">
+        <label>Upload and extract ZIP file:  <?php
+if (class_exists('ZipArchive')) {
+    echo "ZipArchive ON.";
+} else {
+    echo "ZipArchive OFF.";
+}
+?>
+</label>
+        <input type="file" name="zip_file" required>
+        <input type="submit" value="Extract ZIP">
+    </form>
+
+</td>
+
 <td>
     <!-- Form untuk membuat direktori baru -->
     <form action="?dir=<?php echo ($dir); ?>" method="post">
@@ -930,39 +960,6 @@ echo "" . htmlspecialchars($direktori_sekarang);
         </tr>
     <?php endforeach; ?>
 </table>
-
-
-
-<?php
-if (class_exists('ZipArchive')) {
-    echo "Ekstensi ZipArchive aktif.";
-} else {
-    echo "Ekstensi ZipArchive tidak aktif.";
-}
-?>
-
-
-    <!-- Form untuk mengunggah dan mengekstrak file ZIP -->
-    <form action="?dir=<?php echo ($dir); ?>" method="post" enctype="multipart/form-data">
-        <label>Upload and extract ZIP file:</label>
-        <input type="file" name="zip_file" required>
-        <input type="submit" value="Extract ZIP">
-    </form>
-
-<br>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
