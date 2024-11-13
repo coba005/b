@@ -1,5 +1,9 @@
 <?php
-session_start();
+ini_set('log_errors', 0);
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 $koneksi = null;
 $error = '';
 $success = '';
@@ -226,8 +230,7 @@ if (isset($_POST['simpan_edit'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minidbai</title>
-<meta name="robots" content="noindex, nofollow">
+    <title>PHP Database Manager</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -349,7 +352,7 @@ if (isset($_POST['simpan_edit'])) {
 <body>
 
 <div class="container">
-    <h1>MiniDBAIV2</h1>
+    <h1>PHP Database Manager</h1>
 
     <?php
     if (!empty($error)) {
@@ -395,8 +398,7 @@ if (isset($_POST['simpan_edit'])) {
     ?>
     <?php endif; ?>
 </div>
-<center>
-<p class="u-small-text u-text u-text-variant u-text-1"> ©Copyright Powered By <a target="_blank" href="https://bukakartu.id/minidbai">MiniDBAI</a></p>
-<center>
+
+<center>[<a target="_blank"  href="https://bukakartu.id/minidbai">minidbai</a>]</center>
 </body>
 </html>
