@@ -810,8 +810,8 @@ foreach ($pathParts as $part) {
         // Buat link untuk bagian ini
         echo '<a href="' . $baseUrl . '?dir=' . ($currentPath) . '/">' . $part . '</a>';
 
-        // Tambahkan pemisah ' / '
-        echo ' / ';
+        // Tambahkan pemisah '/'
+        echo '/';
     }
 }
 
