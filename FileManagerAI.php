@@ -338,9 +338,60 @@ $files = scandir($dir);
 <meta name="robots" content="noindex,nofollow">
     <style>
         body { font-family: Arial, sans-serif; background-color: aliceblue;}
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 8px 12px; border: 1px solid #00000000; font-size: 100%;}
-        th { background-color: #c2e1fb; }
+
+    table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+	    font-size: 100%;
+            
+        }
+
+        th {
+            background-color: #c2e1fb;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+    background-color: #ffb4b4; /* Warna latar belakang saat hover */
+    cursor: pointer; /* Mengubah kursor menjadi pointer */
+        }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead tr {
+                display: none;
+            }
+
+            tr {
+                margin-bottom: 15px;
+            }
+
+            td {
+                position: relative;
+            }
+
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-left: 15px;
+                font-weight: bold;
+                text-align: left;
+            }
+        }
 
 a {
     text-decoration: none;
@@ -399,10 +450,6 @@ input[type="submit"]:hover {
     background-color: #45a049;
 }
 
-table tr:hover {
-    background-color: #ffb4b4; /* Warna latar belakang saat hover */
-    cursor: pointer; /* Mengubah kursor menjadi pointer */
-}
 
 
 
@@ -770,9 +817,9 @@ if (isset($_POST['download_wp'])) {
 
 <?php
 if (class_exists('ZipArchive')) {
-    echo "<label>ZipArchive ON</label>";
+    echo "<label>ZipArchive <b style='color: #00ad67;'>ON</b></label>";
 } else {
-    echo "<label>ZipArchive OFF</label>";
+    echo "<label>ZipArchive <b style='color: red;'>OFF/b></label>";
 }
 ?>
 
@@ -1177,21 +1224,21 @@ if (isset($_POST['action']) && $_POST['action'] == 'phpinfo') {
 echo "<h1>Informasi Server</h1>";
 
 if (function_exists('mysqli_connect')) {
-    echo "<p><strong>MySQL:</strong> ON | ";
+    echo "<p><strong>MySQL:</strong> <b style='color: #00ad67;'>ON</b> | ";
 } else {
-    echo "<p><strong>MySQL:</strong> OFF | ";
+    echo "<p><strong>MySQL:</strong> <b style='color: red;'>OFF/b> | ";
 }
 
 if (function_exists('curl_version')) {
     $curl_info = curl_version();
-    echo "<strong>cURL:</strong> ON | ";
+    echo "<strong>cURL:</strong> <b style='color: #00ad67;'>ON</b> | ";
 } else {
-    echo "<strong>cURL:</strong> OFF | ";
+    echo "<strong>cURL:</strong> <b style='color: red;'>OFF/b> | ";
 }
 if (function_exists('mail')) {
-    echo "<strong>Mailer:</strong> ON | ";
+    echo "<strong>Mailer:</strong> <b style='color: #00ad67;'>ON</b> | ";
 } else {
-    echo "<strong>Mailer:</strong> OFF | ";
+    echo "<strong>Mailer:</strong> <b style='color: red;'>OFF/b> | ";
 }
 echo "<strong>OS Server: </strong>" . PHP_OS . " | ";
 echo "<strong>PHP Version:</strong> " . phpversion() . "</p>";
