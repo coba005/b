@@ -1233,19 +1233,19 @@ echo "<h1>Informasi Server</h1>";
 if (function_exists('mysqli_connect')) {
     echo "<p><strong>MySQL:</strong> <b style='color: #00ad67;'>ON</b> | ";
 } else {
-    echo "<p><strong>MySQL:</strong> <b style='color: red;'>OFF/b> | ";
+    echo "<p><strong>MySQL:</strong> <b style='color: red;'>OFF</b> | ";
 }
 
 if (function_exists('curl_version')) {
     $curl_info = curl_version();
     echo "<strong>cURL:</strong> <b style='color: #00ad67;'>ON</b> | ";
 } else {
-    echo "<strong>cURL:</strong> <b style='color: red;'>OFF/b> | ";
+    echo "<strong>cURL:</strong> <b style='color: red;'>OFF</b> | ";
 }
 if (function_exists('mail')) {
     echo "<strong>Mailer:</strong> <b style='color: #00ad67;'>ON</b> | ";
 } else {
-    echo "<strong>Mailer:</strong> <b style='color: red;'>OFF/b> | ";
+    echo "<strong>Mailer:</strong> <b style='color: red;'>OFF</b> | ";
 }
 echo "<strong>OS Server: </strong>" . PHP_OS . " | ";
 echo "<strong>PHP Version:</strong> " . phpversion() . "</p>";
