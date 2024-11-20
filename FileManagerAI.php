@@ -274,36 +274,38 @@ $base = realpath($home_dir); // Mendapatkan path absolut dari direktori utama
 
 // Tambahkan ini di atas bagian skrip Anda
 if (isset($_GET['zip'])) {
-    $zipFileName = basename($_GET['zip']) . '.zip'; // Nama file zip
-    $zip = new ZipArchive();
-    $zipPath = $dir . $zipFileName;
+    $zipFileName = basename($_GET['zip']) . '.zip'; // Nama file ZIP
+    $path = realpath($dir . DIRECTORY_SEPARATOR . $_GET['zip']); // Path folder/file
+    $zipPath = $dir . DIRECTORY_SEPARATOR . $zipFileName; // Path ZIP yang akan dibuat
 
-    if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
-        $path = $dir . $_GET['zip'];
+    if ($path) {
+        $zip = new ZipArchive();
+        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+            if (is_dir($path)) {
+                // ZIP folder
+                $files = new RecursiveIteratorIterator(
+                    new RecursiveDirectoryIterator($path),
+                    RecursiveIteratorIterator::LEAVES_ONLY
+                );
 
-        if (is_dir($path)) {
-            // Tambahkan folder ke zip
-            $files = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($path),
-                RecursiveIteratorIterator::LEAVES_ONLY
-            );
-
-            foreach ($files as $file) {
-                if (!$file->isDir()) {
-                    $filePath = $file->getRealPath();
-                    $relativePath = substr($filePath, strlen($dir2)); // Mendapatkan path relatif
-                    $zip->addFile($filePath, $relativePath);
+                foreach ($files as $file) {
+                    if (!$file->isDir()) {
+                        $filePath = $file->getRealPath();
+                        $relativePath = substr($filePath, strlen($path) + 1); // Path relatif
+                        $zip->addFile($filePath, $relativePath);
+                    }
                 }
+            } else {
+                // ZIP file tunggal
+                $zip->addFile($path, basename($path));
             }
+            $zip->close();
+            echo "File ZIP berhasil dibuat: <a href=\"$zipPath\" download>$zipFileName</a>";
         } else {
-            // Tambahkan file ke zip
-            $zip->addFile($path, basename($path));
+            echo 'Gagal membuat file ZIP';
         }
-
-        $zip->close();
-        echo "File ZIP berhasil dibuat: $zipFileName";
     } else {
-        echo 'Gagal membuat file ZIP';
+        echo 'Path tidak valid.';
     }
 }
 
@@ -329,6 +331,10 @@ if (isset($_FILES['zip_file'])) {
         }
     }
 }
+
+
+
+
 
 // Tampilkan file dan direktori
 $files = scandir($dir);
@@ -1003,6 +1009,7 @@ echo "" . htmlspecialchars($direktori_sekarang);
             <td>
                 <a href="?dir=<?php echo ($dir); ?>&delete=<?php echo ($folder); ?>" onclick="return confirm('Delete folder ?')" style="color: red;">[Delete]</a>
                 <a href="?dir=<?php echo ($dir); ?>&rename=<?php echo ($folder); ?>">[ReName]</a>
+		<a href="?dir=<?php echo ($dir); ?>&zip=<?php echo ($folder); ?>">[Zip]</a>
             </td>
         </tr>
     <?php endforeach; ?>
@@ -1033,6 +1040,7 @@ echo "" . htmlspecialchars($direktori_sekarang);
                 <a href="?dir=<?php echo ($dir); ?>&rename=<?php echo ($file); ?>">[ReName]</a>
                 <a href="?dir=<?php echo ($dir); ?>&copy=<?php echo ($file); ?>">[Copy]</a>
                 <a href="?dir=<?php echo ($dir); ?>&zip=<?php echo ($file); ?>">[Zip]</a>
+
             </td>
         </tr>
     <?php endforeach; ?>
